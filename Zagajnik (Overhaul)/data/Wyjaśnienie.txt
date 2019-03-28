@@ -1,0 +1,5 @@
+First Blood - kiedy pierwszy raz spotyka przeciwnika
+Wybór - Gracz bd stawa³ przzed wyborem
+DeathStats - Po walce i wygranej gracza
+Atak - atak gracza
+AtakPrzeciwnika - Atak przeciwnika LOL

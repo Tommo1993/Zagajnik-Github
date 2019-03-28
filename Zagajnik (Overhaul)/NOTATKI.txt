@@ -1,0 +1,29 @@
+x = input().upper() #zamienia wszystkie litery na du¿e
+x = input().lower() #zamienia wszystkie litery na ma³e
+x = input().casefold() #zamienia litery na obojêtne, coœ robi z literami specjalnymi
+item.itemslotactive1 #sloty na aktywne przedmioty 1-6
+item.itemslotactive2
+item.itemslotactive3 
+item.itemslotactive4
+item.itemslotactive5
+item.itemslotactive6
+item.itemslothead #sloty na zbrojê
+item.itemslotchest
+item.itemslotarms
+item.itemslothands
+item.itemslotlegs
+item.itemslotfoot
+item.itemslotacc1 #sloty na akcesoria 1-3
+item.itemslotacc2
+item.itemslotacc3
+item.itemslotweapon1 #sloty na bronie 1-2
+item.itemslotweapon2
+item.assignmentinvslot #przechowuje dane przedmiotów
+defineinventory(item) #ustawia ekwipunek na puste listy
+itemuse(lookforinv,ActionInput) #po wybraniu akcji pyta gracza o jaki przedmiot chodzi
+lookforinventory(lookforinv,ActionInput,player,item) #szuka przedmioty w ekwipunku i wykonuje okreœlone akcje (dotycz¹ce tego przedmiotu)
+lookforinvtype(ActionInput) #³¹czy 3 definicje pokazuj¹ce ekwipunek
+lookfornamesinv(item) #pokazuje przedmioty w ekwipunku (i ile ich jest)
+lookforuseditems(item) #pokazuje przedmioty u¿ywane (bronie i przedmioty aktywne)
+lookforwornitems(item) #pokazuje przedmioty noszone (zbroja i akcesoria)
+DebugAdditem(item) #rêczne dodawanie przedmiotów
