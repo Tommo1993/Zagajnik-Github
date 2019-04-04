@@ -57,7 +57,7 @@ def Bronie(defineinventory,item):
 #####OBRAŻENIA#####
 
 #####SYSTEM WALKI#####
-x="Nie masz many! Wybierz coś innego, albo WRÓĆ." # tak ku optymalizacji BeRTo #fuk u			
+tekstBrakuMany="Nie masz many! WRÓĆ lub Wybierz" # tak ku optymalizacji BeRTo #fuk u			
 class EnemyStats:
     def __init__(entity, name, ID, HP, MP, attackdmg, EXPreward):
         entity.name = name
@@ -236,32 +236,83 @@ def Magia (player,entity):
     print("Co chciałbyś wybrać?")
     print ("(Aby użyć coś innego wpisz WRÓĆ.)")
     Magicstr = str(input())
-    Magiclist=["Kula ognia","Wysysanie Życia","Mroźny Podmuch","Berserker","Wstząs","Otrucie"]
+    Magiclist=["Kula ognia","Wysysanie Życia","Mroźny Podmuch","Bertserker","Wstząs","Otrucie"]
     print (Magiclist)
     def KulaOgnia():
         if player.MP < 3:
-            print(x)
-        else: # nie mam pomysłu, ale zawsze jakiś początek
+            print("Ups... Ups... Nie stać cię na to!")
+            Wybór
+        else:
             player.MP -= 3
             entity.HP -= 5
             return player, entity
     def WysysanieŻycia():
-        if player.MP < 3:
-            print(x)
+        if player.MP < 5:
+            print(tekstBrakuMany + " Kula Ognia")
+            postwybór = str(input())
+            if postwybór == "Kula Ognia" and player.MP >= 3:
+                KulaOgnia
+            if postwybór not in ("Kula Ognia"):
+                print("Niestety mój padawanie nie znam takiego zaklęcia.")
+            else:
+                print("Ups... Ups... Nie stać cię na to!")
+                Wybór
         else:
             player.MP -= 5
             entity.HP -= 2
             player.HP += 2
             return player, entity
     def MroźnyPodmuch():
-        if player.MP < 3:
-            print(x)
-        player.MP -= 5
-        entity.HP -= 4
+        if player.MP < 5:
+            print(tekstBrakuMany + " Kula Ognia")
+            if postwybór == "Kula Ognia" and player.MP >= 3:
+                KulaOgnia
+            if postwybór not in ("Kula Ognia"):
+                print("Niestety mój padawanie nie znam takiego zaklęcia.")
+            else:
+                print("Ups... Ups... Nie stać cię na to!")
+                Wybór
+        else:
+            player.MP -= 5
+            entity.HP -= 4
         return player, entity
-    def Berserker():
-         if player.MP < 5 or player.HP <= 2:
-            print(x)
+    def Bertserker(): # Bert-ser-ker hah! Got him! huh
+        if player.HP <= 2:
+            print("Jak to wybierzesz to zginiesz.(Choć i tak długo nie pożyjesz)")
+            harakiri = str(input())
+            if harakiri == "TAK":
+             player.HP -= 2
+             player.MP -= 5
+             entity.HP -= 9
+            if harakiri == "NIE":
+                    if player.MP >= 3:
+                            print("Stać cię na Kulę Ognia. Jeśli nie chcesz tego teraz użyć")
+                            print("wpisz WRÓĆ")
+                            BertserkerDec = str(input())
+                            if BertserkerDec == "Kula Ognia":
+                                    KulaOgnia
+                            if BertserkerDec == "WRÓĆ":
+                                    Wybór
+                            else:
+                                    print("Co? Co powiedziałeś?")
+                                    return BertserkerDec
+                    else:
+                              print("Ilość many:" + Player.MP)
+                              print("Ojć! Ojć! chyba masz za mało many.")
+                              Wybór
+            else:       
+                    print("Co? Co powiedziałeś?")
+                    return harakiri              
+        if player.MP < 5:
+            postwybór = str(input())
+            print(tekstBrakuMany + " Kula Ognia")
+            if postwybór == "Kula Ognia" and player.MP >= 3:
+                KulaOgnia
+            if postwybór not in ("Kula Ognia"):
+                print("Niestety mój padawanie nie znam takiego zaklęcia.")
+            else:
+                print("Ups... Ups... Nie stać cię na to!")
+                Wybór
         else:
              player.HP -= 2
              player.MP -= 5
@@ -269,7 +320,29 @@ def Magia (player,entity):
              return player, entity
     def Wstrząs():
         if player.MP < 6:
-            print(x)
+            postwybór = str(input())
+            print(tekstBrakuMany + "Kula Ognia, Bertserker, Mroźny Podmuch")
+            if postwybór == "Kula Ognia":
+                if player.MP >= 3:
+                    KulaOgnia
+                else:
+                        print("Ups... Ups... Nie stać cię na to!")
+                        Wybór
+            if postwybór == "Mroźny Podmuch": 
+                if player.MP >= 3:
+                        MroźnyPodmuch
+                else:
+                        print("Ups... Ups... Nie stać cię na to!") # z mroźnego p. na Kulę ognia
+            if postwybór == "Bertserker":
+                if player.HP > 2:
+                    if player.MP>=5:
+                        Bertserker
+                    else:
+                        print("Ups... Ups... Nie stać cię na to!") # z bertserkera na kulę ognia
+                        Wybór
+            else:
+                     print("Co? Co powiedziałeś?")
+                     return postwybór
         else:
             player.MP -= 6
             entity.HP -= 4
@@ -277,12 +350,35 @@ def Magia (player,entity):
             return player, entity
     def Otrucie():
          if player.MP < 7:
-            print(x)
-        else:
+            postwybór = str(input())
+            print(tekstBrakuMany + " Kula Ognia, Bertserker, Mroźny Podmuch, Wstrząs")
+            if postwybór == "Kula Ognia" and player.MP >= 3:
+                KulaOgnia
+            else:
+                print("Ups... Ups... Nie stać cię na to!")
+                Wybór
+            if postwybór == "Mroźny Podmuch" and player.MP >= 5:
+                MroźnyPodmuch
+            else:
+                print("Ups... Ups... Nie stać cię na to!")
+                Wybór
+            if postwybór == "Bertserker" and player.MP >= 5 and player.HP > 2:
+                Bertserker
+            else:
+                print("Ups... Ups... Nie stać cię na to!") # tu do HP i MP
+                Wybór
+            if postwybór == "Wstrząs" and player.MP >= 6:
+                Wstrząs
+            else:
+                print("Ups... Ups... Nie stać cię na to!")
+                Wybór
+         else:
              player.MP -= 7
              entity.HP -= 3
              Trucizna = 1
              return player, entity
+         if postwybór not in ("Kula Ognia","Mróźny Podmuch","Bertserker","Wstrzas"):
+            print("Niestety mój padawanie nie znam takiego zaklęcia.")
     if Magicstr == Magiclist[0]:
         KulaOgnia
     if Magicstr == Magiclist[1]:
@@ -290,7 +386,7 @@ def Magia (player,entity):
     if Magicstr == Magiclist[2]:
         MroźnyPodmuch
     if Magicstr == Magiclist[3]:
-        Berserker
+        Bertserker
     if Magicstr == Magiclist[4]:
         Wstrzrąs
     if Magicstr == Magiclist[5]:
@@ -318,7 +414,7 @@ def MagiaWroga(player,entity):
             player.HP -= 4
             Wybór
             return player,entity
-    def Berserker1():
+    def Bertserker1():
             entity.HP -= 2
             entity.MP -= 5
             player.HP -= 9
@@ -335,35 +431,41 @@ def MagiaWroga(player,entity):
             player.HP -= 3
             Wybór
             return player, entity
-    if MagicEntDec==1:
+    if MagicEntDec==1: # gdy test się nie uda Robi cały proceder raz jeszcze
         if entity.MP >= 3:
             KulaOgnia1
         else:
+            del MagicEntDec # OPtyMaLIZacJa BErTO
             MagiaWroga
     if MagicEntDec==2:
         if entity.MP >= 5:
             WysysanieŻycia1
         else:
+            del MagicEntDec
             MagiaWroga
     if MagicEntDec==3:
         if entity.MP >= 5:
             MroźnyPodmuch
         else:
+            del MagicEntDec
             MagiaWroga
     if MagicEntDec==4:
         if entity.MP >= 5 and entity.HP > 2: # no bo jak byłoby równe to by był autokil heh
-            Berserker1
+            Bertserker1
         else:
+            del MagicEntDec
             MagiaWroga
     if MagicEntDec==5:
         if entity.MP >= 6:
             Wstrząs1
         else:
+            del MagicEntDec
             MagiaWroga
     if MagicEntDec==6:
         if entity.MP >= 7:
             Otrucie1
         else:
+            del MagicEntDec
             MagiaWroga
 
 
@@ -466,7 +568,7 @@ def WybórPrzeciwnika(player,entity): # czyli jego atak lub magia.
         Trucizna += 1
     LosDecWalkiPrzeciwnika=random.randint(0,2)
     if LosDecWalkiPrzeciwnika==1:
-        if entity.MP not in range(0,3): #######################
+        if entity.MP not in range(0,3):
             MagiaWroga
         else:
             AtakPrzeciwnika
@@ -536,34 +638,39 @@ def AtakPrzeciwnika(player, entity):
 
 #####SYSTEM QUESTÓW#####
 def Questy():
+        
     DaneQuesta=[0,"","","","",0,0,0,0] #Slot 0- Aktywność questa Slot 1- Nazwa Slot 2- Opis Slot 3- Zleceniodawca Slot 4- Nagroda przedmiot Slot 5- ilość exp Slot 6- nagroda pieniądze 7- ID questa 8- status
     DaneQuesta1=[0,"Miejscowy Bohater","Zostało mi powierzone bardzo trudne zadanie - odnaleźć łyżeczkę dżemu.","Staruszek z Crosset","",100,5,1,0]
-    return DaneQuesta
+    DaneWszystkichQuestów=[]
+    DaneWszystkichQuestów.append(DaneQuesta)
+    DaneWszystkichQuestów.append(DaneQuesta1)
+    #print(DaneWszystkichQuestów)
+    return DaneWszystkichQuestów
 
-def SprawdzanieStatusu(Questy, ActionInput, SzukanieMiejscaNaPrzedmiot, KoniecQuesta):
-    while DaneQuesta1[0] == 1 and DaneQuesta1[7] >0:
-        if DaneQuesta1[8] == 0 and DaneQuesta1[7] == 1 and ActionInput == "quests":
+def SprawdzanieStatusu(DaneWszystkichQuestów, ActionInput, SzukanieMiejscaNaPrzedmiot, KoniecQuesta):
+    while DaneWszystkichQuestów[1][0] == 1 and DaneWszystkichQuestów[1][7] >0:
+        if DaneWszystkichQuestów[1][8] == 0 and DaneWszystkichQuestów[1][7] == 1 and ActionInput == "quests":
             print('''Miejscowy Bohater - Odnajdź łyżeczkę dżemu.
             Nagroda - 5 Koron, 100exp
             Zleceniodawca - Staruszek z Crosset''')
-        if DaneQuesta1[8] == 1 and DaneQuesta1[7] == 1 and ActionInput == "quests":
+        if DaneWszystkichQuestów[1][8] == 1 and DaneWszystkichQuestów[1][7] == 1 and ActionInput == "quests":
             print('''Miejscowy Bohater - Wykonane.
             Nagroda - 5 Koron, 100exp
             Zleceniodawca - Staruszek z Crosset''')
-        if DaneQuesta1[8] == 1 and DaneQuesta1[7] == 1:
+        if DaneWszystkichQuestów[1][8] == 1 and DaneWszystkichQuestów[1][7] == 1:
             print('''Zadanie "Miejscowy Bohater" zostało ukończone.
             Wróć do zleceniodawcy po nagrodę.''')
-            if DaneQuesta1[8] == 1 and Lokacja == 12:
+            if DaneWszystkichQuestów[1][8] == 1 and Lokacja == 12:
                 print('''Dziękuje Ci! Kto jest małą łyżeczką, no kto!
             Żebym nie wyszedł na dusigrosza o to mała nagroda.''')
                 print('Otrzymano: 5 Koron')
-                if DaneQuesta1[4] == 0:
+                if DaneWszystkichQuestów[1][4] == 0:
                     KoniecQuesta(player, Questy)
-                    DaneQuesta1[0] == 0
-                if DaneQuesta[4] != 0:
+                    DaneQuesta1[0] == 3
+                if DaneWszystkichQuestów[1][4] != 0:
                     SzukanieMiejscaNaPrzedmiot(item, KoniecQuesta)
                     KoniecQuesta(player, Questy)
-                    DaneQuesta1[0] == 0
+                    DaneWszystkichQuestów[1][0] == 3
     
 def PrintQuest(Questy):
     print()
@@ -6856,6 +6963,27 @@ def DebugAdditem(item):
     
     
 #####EKWIPUNEK#####
+
+#####WYDARZENIA#####
+def EventHandler(LocMoveset,item,player,ActionInput,Loc7Moveset):
+    if LocMoveset[5] == 1:
+        print("Między kamyczkami na dnie widzisz mieniącą się złotą monetę")
+        print("Czy chciałbyś ją podnieść? (Tak/Nie)")
+        while ActionInput != "tak" or ActionInput != "nie":
+            ActionInput = input().lower()
+            if ActionInput == "tak":
+                item.gold+=1
+                print("Podniosłeś złotą monetę")
+                print("Dodano: +1 Korona")
+                ActionInput = ""
+                LocMoveset[5] = 0
+                Loc7Moveset[5] = 0
+                return LocMoveset, item, player, ActionInput, Loc7Moveset
+            if ActionInput == "nie":
+                print("Postanawaiasz zostawić monetę w spokoju.")
+                break
+#####WYDARZENIA#####
+
 #####GŁÓWNY MODUŁ#####
 akcja=['North','South','East','West','n','s','w','e','Zjedz','Użyj','Opis','Atakuj','Zagadaj']
 MovementAction=['north','n','south','s','east','e','west','w']
@@ -6866,28 +6994,28 @@ MovementWest=['west','w']
 OtherAction=['zjedz','użyj','opis','atakuj','zagadaj', 'ubierz', 'dobądź', 'zdejmij', 'schowaj', 'ekwipunek', 'weź']
 ItemAction=['zjedz','użyj','opis','ubierz','dobądź','zdejmij','schowaj','ekwipunek']
 DebugAction=['debug','additem']
-LocMoveset=[0,0,0,0]
-Loc1Moveset=[2,0,0,0] #W kolejności North(0)/South(1)/East(2)/West(3)
-Loc2Moveset=[3,0,0,0]
-Loc3Moveset=[0,2,4,9] #Skrzyżowanie
-Loc4Moveset=[5,0,7,3] #0 = "Tam nie pójdziesz'
-Loc5Moveset=[0,4,0,0] #Strumyk
+LocMoveset=[0,0,0,0,0,0]
+Loc1Moveset=[2,0,0,0,0,0] #W kolejności North(0)/South(1)/East(2)/West(3)/Wróg w Lokacji(4)/Wydarzenie(5)
+Loc2Moveset=[3,0,0,0,0,0]
+Loc3Moveset=[0,2,4,9,0,0] #Skrzyżowanie
+Loc4Moveset=[5,0,7,3,0,0] #0 = "Tam nie pójdziesz'
+Loc5Moveset=[0,4,0,0,0,0] #Strumyk
 #Loc6Moveset=[0,0,0,0] #Alternatywna wersja strumyka
-Loc7Moveset=[0,8,0,4]
-Loc8Moveset=[7,0,0,0] #Obóz ogrów w zagajniku
-Loc9Moveset=[10,0,3,11]
-Loc10Moveset=[12,9,0,0]
-Loc11Moveset=[0,0,9,0] #Ognisko w Zagajniku
-Loc12Moveset=[14,10,0,0] #Południowa brama Crosset
+Loc7Moveset=[0,8,0,4,0,1]
+Loc8Moveset=[7,0,0,0,0,0] #Obóz ogrów w zagajniku
+Loc9Moveset=[10,0,3,11,0,0]
+Loc10Moveset=[12,9,0,0,0,0]
+Loc11Moveset=[0,0,9,0,0,0] #Ognisko w Zagajniku
+Loc12Moveset=[14,10,0,0,0,0] #Południowa brama Crosset
 #Loc13Moveset=[0,0,0,0] #alternatywna wersja bramy
-Loc14Moveset=[19,12,16,15] #skrzyzowanie crosset
-Loc15Moveset=[20,0,14,0] #ulica pszenna crosset
-Loc16Moveset=[17,0,21,14] #ulica targowa crosset
-Loc17Moveset=[0,16,0,0] #zaułek
+Loc14Moveset=[19,12,16,15,0,0] #skrzyzowanie crosset
+Loc15Moveset=[20,0,14,0,0,0] #ulica pszenna crosset
+Loc16Moveset=[17,0,21,14,0,0] #ulica targowa crosset
+Loc17Moveset=[0,16,0,0,0,0] #zaułek
 #Loc18Moveset=[0,0,0,0] #alternatywny zaułek
-Loc19Moveset=[0,14,0,0] #wieża straznicza crosset
-Loc20Moveset=[0,15,0,0] #piekarnia crosset
-Loc21Moveset=[0,0,0,16] #kuźnia crosset
+Loc19Moveset=[0,14,0,0,0,0] #wieża straznicza crosset
+Loc20Moveset=[0,15,0,0,0,0] #piekarnia crosset
+Loc21Moveset=[0,0,0,16,0,0] #kuźnia crosset
 
 
 def ActInput(ActionInput):
@@ -6981,7 +7109,8 @@ def ActionCheck(ActionInput,Lokacja,LocMoveset): #nie testowane, powiedzmy że d
         print("???")
     return ActionInput, Lokacja, LocMoveset
 
-def LocDescCheck(Lokacja):
+#def LocDescCheck(Lokacja):
+def LocDescCheck(Lokacja, DaneQuesta1):
     if Lokacja == 1:
         loc1()
     if Lokacja == 2:
@@ -7081,10 +7210,18 @@ while start == 0:
     
 
 Lokacja = 1
+DaneWszystkichQuestów=Questy()
+#print(DaneWszystkichQuestów)
+#print()
+print('[1][0]:',DaneWszystkichQuestów[1][0])
+print('[1][1]:',DaneWszystkichQuestów[1][1])
+print('[1][2]:',DaneWszystkichQuestów[1][2])
 while Lokacja != 0 and start == 1: #lokacja 0 to GAME OVER
-    LocDescCheck(Lokacja)
+    #LocDescCheck(Lokacja)
+    LocDescCheck(Lokacja,DaneWszystkichQuestów[1])
     LocMoveset=LocMovesetCheck(Lokacja)
     ActionInput = input().lower()
+    OdpalanieQuesta1(Questy, ActionInput, SzukanieMiejscaNaPrzedmiot, KoniecQuesta)
     #to zmieniłem i TO JEST KLUCZOWE:
     (ActionInput,Lokacja,LocMoveset)=ActionCheck(ActionInput,Lokacja,LocMoveset)
     if ActionInput == 'zjedz':
