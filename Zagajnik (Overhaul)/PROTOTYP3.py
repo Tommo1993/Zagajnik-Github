@@ -7110,7 +7110,7 @@ def ActionCheck(ActionInput,Lokacja,LocMoveset): #nie testowane, powiedzmy że d
     return ActionInput, Lokacja, LocMoveset
 
 #def LocDescCheck(Lokacja):
-def LocDescCheck(Lokacja, DaneQuesta1):
+def LocDescCheck(Lokacja, DaneWszystkichQuestów):
     if Lokacja == 1:
         loc1()
     if Lokacja == 2:
@@ -7133,10 +7133,20 @@ def LocDescCheck(Lokacja, DaneQuesta1):
         loc10()
     if Lokacja == 11:
         loc11()
-    if Lokacja == 12:
-        loc12()
-    if Lokacja == 13:
+    if Lokacja == 12 and DaneWszystkichQuestów[1][0] == 0:
+        DaneWszystkichQuestów[1][0] = 1
+        print('[1][0]:',DaneWszystkichQuestów[1][0])
+        print('[1][1]:',DaneWszystkichQuestów[1][1])
+        print('[1][2]:',DaneWszystkichQuestów[1][2])
         loc13()
+        print('Otrzymano zadanie: Miejscowy Bohater')
+        print()
+        print()
+        print()
+    if Lokacja == 12 and DaneWszystkichQuestów[1][0] == 1 or DaneWszystkichQuestów[1][0] == 3:
+        loc12()
+    #if Lokacja == 13:
+        #loc13()
     if Lokacja == 14:
         loc14()
     if Lokacja == 15:
@@ -7218,10 +7228,10 @@ print('[1][1]:',DaneWszystkichQuestów[1][1])
 print('[1][2]:',DaneWszystkichQuestów[1][2])
 while Lokacja != 0 and start == 1: #lokacja 0 to GAME OVER
     #LocDescCheck(Lokacja)
-    LocDescCheck(Lokacja,DaneWszystkichQuestów[1])
+    LocDescCheck(Lokacja,DaneWszystkichQuestów)
     LocMoveset=LocMovesetCheck(Lokacja)
     ActionInput = input().lower()
-    OdpalanieQuesta1(Questy, ActionInput, SzukanieMiejscaNaPrzedmiot, KoniecQuesta)
+    
     #to zmieniłem i TO JEST KLUCZOWE:
     (ActionInput,Lokacja,LocMoveset)=ActionCheck(ActionInput,Lokacja,LocMoveset)
     if ActionInput == 'zjedz':
