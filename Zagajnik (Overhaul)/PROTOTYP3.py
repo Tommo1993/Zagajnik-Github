@@ -6965,7 +6965,7 @@ def DebugAdditem(item):
 #####EKWIPUNEK#####
 
 #####WYDARZENIA#####
-def EventHandler(LocMoveset,item,player,ActionInput,Loc7Moveset):
+def EventHandler(LocMoveset,item,player,ActionInput,MovementAction,Loc5Moveset):
     if LocMoveset[5] == 1:
         print("Między kamyczkami na dnie widzisz mieniącą się złotą monetę")
         print("Czy chciałbyś ją podnieść? (Tak/Nie)")
@@ -6977,11 +6977,54 @@ def EventHandler(LocMoveset,item,player,ActionInput,Loc7Moveset):
                 print("Dodano: +1 Korona")
                 ActionInput = ""
                 LocMoveset[5] = 0
-                Loc7Moveset[5] = 0
-                return LocMoveset, item, player, ActionInput, Loc7Moveset
+                Loc5Moveset[5] = 0
+                return LocMoveset, item, player, ActionInput, MovementAction, Loc5Moveset
             if ActionInput == "nie":
                 print("Postanawaiasz zostawić monetę w spokoju.")
                 break
+    if LocMoveset[5] == 2:
+        while ActionInput != "tak" or ActionInput != "nie":
+            ActionInput = input().lower()
+            if ActionInput in MovementNorth:
+                return LocMoveset, item, player, ActionInput, MovementAction, Loc5Moveset
+            if ActionInput == "tak":
+                print("...Mmmm... Cóż za soczysty zapach...")
+                time.sleep(3)
+                print("Giniesz krótko po tym gdy próbowałeś pocałować ogra.")
+                print("Nawet taki zwierzoczłowiek ma jakieś podstawy moralne...")
+                time.sleep(3)
+                player.HP = 0
+                LocMoveset[5] = 0
+                return LocMoveset, item, player, ActionInput, MovementAction, Loc5Moveset
+            if ActionInput == "nie":
+                print('Dobry wybór Kmiotku.')
+                print("Możesz spokojnie odejść...")
+                LocMoveset[5] = 0
+                break
+    if LocMoveset[5] == 3:
+        while ActionInput != "tak" or ActionInput != "nie":
+            ActionInput = input().lower()
+            if ActionInput in MovementEast:
+                return LocMoveset, item, player, ActionInput, MovementAction, Loc5Moveset
+            if ActionInput == "tak":
+                print('...Powoli wsadzasz palec w żar...')
+                time.sleep(2)
+                print('Dziwnym przypadkiem po chwilowym bólu tracisz czucie w palcu...')
+                time.sleep(2)
+                print('Totalnie przypadkowo twój palec zostaje w ognisku.')
+                time.sleep(2)
+                strata = random.randint(1,3)
+                player.HP -= strata
+                print("Straciłeś",strata,"HP!")
+                LocMoveset[5] = 0
+                return LocMoveset, item, player, ActionInput, MovementAction, Loc5Moveset
+            if ActionInput == "nie":
+                print('Dobry wybór Kmiotku.')
+                print("Możesz spokojnie odejść...")
+                LocMoveset[5] = 0
+                break
+            
+            
 #####WYDARZENIA#####
 
 #####GŁÓWNY MODUŁ#####
@@ -6999,13 +7042,13 @@ Loc1Moveset=[2,0,0,0,0,0] #W kolejności North(0)/South(1)/East(2)/West(3)/Wróg
 Loc2Moveset=[3,0,0,0,0,0]
 Loc3Moveset=[0,2,4,9,0,0] #Skrzyżowanie
 Loc4Moveset=[5,0,7,3,0,0] #0 = "Tam nie pójdziesz'
-Loc5Moveset=[0,4,0,0,0,0] #Strumyk
+Loc5Moveset=[0,4,0,0,0,1] #Strumyk
 #Loc6Moveset=[0,0,0,0] #Alternatywna wersja strumyka
-Loc7Moveset=[0,8,0,4,0,1]
-Loc8Moveset=[7,0,0,0,0,0] #Obóz ogrów w zagajniku
+Loc7Moveset=[0,8,0,4,0,0]
+Loc8Moveset=[7,0,0,0,0,2] #Obóz ogrów w zagajniku
 Loc9Moveset=[10,0,3,11,0,0]
 Loc10Moveset=[12,9,0,0,0,0]
-Loc11Moveset=[0,0,9,0,0,0] #Ognisko w Zagajniku
+Loc11Moveset=[0,0,9,0,0,3] #Ognisko w Zagajniku
 Loc12Moveset=[14,10,0,0,0,0] #Południowa brama Crosset
 #Loc13Moveset=[0,0,0,0] #alternatywna wersja bramy
 Loc14Moveset=[19,12,16,15,0,0] #skrzyzowanie crosset
@@ -7120,7 +7163,7 @@ def LocDescCheck(Lokacja, DaneWszystkichQuestów):
     if Lokacja == 4:
         loc4()
     if Lokacja == 5:
-        loc5()
+        loc6()
     if Lokacja == 6:
         loc6()
     if Lokacja == 7:
@@ -7230,7 +7273,14 @@ while Lokacja != 0 and start == 1: #lokacja 0 to GAME OVER
     #LocDescCheck(Lokacja)
     LocDescCheck(Lokacja,DaneWszystkichQuestów)
     LocMoveset=LocMovesetCheck(Lokacja)
-    ActionInput = input().lower()
+    if LocMoveset[4] != 0 or LocMoveset[5] != 0:
+        EventHandler(LocMoveset,item,player,ActionInput,MovementAction,Loc7Moveset)
+        if player.HP <= 0:
+            Lokacja = 0
+        if ActionInput not in MovementAction:
+            ActionInput = input().lower()
+    if LocMoveset[5] == 0 and LocMoveset[4] == 0:
+        ActionInput = input().lower()
     
     #to zmieniłem i TO JEST KLUCZOWE:
     (ActionInput,Lokacja,LocMoveset)=ActionCheck(ActionInput,Lokacja,LocMoveset)
