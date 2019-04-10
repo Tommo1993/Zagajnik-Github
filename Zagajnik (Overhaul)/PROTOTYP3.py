@@ -812,9 +812,9 @@ def ClassChoice(player,item,StartInput):
         player.luck = 1
         player.pclass = 1
         item.itemslotchest = [1,"Stary skórzany napierśnik","Jeszcze się trzyma...","armor","armorchest",0,0,0,0,0,0,0,0,0,0,0,0,0.1,0.1,0.05,0]
-        item.itemslotlegs = [1,"Dziurawe włókniane spodnie","","armor","armorlegs",0,0,0,0,0,0,0,0,0,0,0,0,0,0.05,0,0]
-        item.itemslotfoot = [1,"Buty bez podeszwy","","armor","armorfoot",0,0,0,0,0,0,0,0,0,0,0,0,0.05,0.05,0.5,0]
-        item.itemslotweapon1 = [1,"Drewniana pałka","","weapon","mace",0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,3]
+        item.itemslotlegs = [1,"Dziurawe włókniane spodnie","Więcej dziur niż nitek.","armor","armorlegs",0,0,0,0,0,0,0,0,0,0,0,0,0,0.05,0,0]
+        item.itemslotfoot = [1,"Buty bez podeszwy","ochroniają podbicie stopy przed podmuchem wiatru!","armor","armorfoot",0,0,0,0,0,0,0,0,0,0,0,0,0.05,0.05,0.5,0]
+        item.itemslotweapon1 = [1,"Drewniana pałka","W zasadzie grubszy kij.","weapon","mace",0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,3]
         item.inventoryslot1 = [1,2,"Bochenek Chleba","Czerstwy, ale da się zjeść.","consumable","food",4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
         item.inventoryslot2 = [1,1,"Bukłak wody","Mmm... bardzo błotnista i prosto z bagna.","consumable","food",0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
         
@@ -6965,7 +6965,7 @@ def DebugAdditem(item):
 #####EKWIPUNEK#####
 
 #####WYDARZENIA#####
-def EventHandler(LocMoveset,item,player,ActionInput,MovementAction,Loc5Moveset):
+def EventHandler(LocMoveset,item,player,ActionInput,Loc7Moveset):
     if LocMoveset[5] == 1:
         print("Między kamyczkami na dnie widzisz mieniącą się złotą monetę")
         print("Czy chciałbyś ją podnieść? (Tak/Nie)")
@@ -7023,8 +7023,6 @@ def EventHandler(LocMoveset,item,player,ActionInput,MovementAction,Loc5Moveset):
                 print("Możesz spokojnie odejść...")
                 LocMoveset[5] = 0
                 break
-            
-            
 #####WYDARZENIA#####
 
 #####GŁÓWNY MODUŁ#####
@@ -7042,13 +7040,13 @@ Loc1Moveset=[2,0,0,0,0,0] #W kolejności North(0)/South(1)/East(2)/West(3)/Wróg
 Loc2Moveset=[3,0,0,0,0,0]
 Loc3Moveset=[0,2,4,9,0,0] #Skrzyżowanie
 Loc4Moveset=[5,0,7,3,0,0] #0 = "Tam nie pójdziesz'
-Loc5Moveset=[0,4,0,0,0,1] #Strumyk
+Loc5Moveset=[0,4,0,0,0,0] #Strumyk
 #Loc6Moveset=[0,0,0,0] #Alternatywna wersja strumyka
-Loc7Moveset=[0,8,0,4,0,0]
-Loc8Moveset=[7,0,0,0,0,2] #Obóz ogrów w zagajniku
+Loc7Moveset=[0,8,0,4,0,1]
+Loc8Moveset=[7,0,0,0,0,0] #Obóz ogrów w zagajniku
 Loc9Moveset=[10,0,3,11,0,0]
 Loc10Moveset=[12,9,0,0,0,0]
-Loc11Moveset=[0,0,9,0,0,3] #Ognisko w Zagajniku
+Loc11Moveset=[0,0,9,0,0,0] #Ognisko w Zagajniku
 Loc12Moveset=[14,10,0,0,0,0] #Południowa brama Crosset
 #Loc13Moveset=[0,0,0,0] #alternatywna wersja bramy
 Loc14Moveset=[19,12,16,15,0,0] #skrzyzowanie crosset
@@ -7148,7 +7146,7 @@ def ActionCheck(ActionInput,Lokacja,LocMoveset): #nie testowane, powiedzmy że d
         if ActionInput == 'additem':
             DebugAdditem(item)
      #NIŻEJ ZMIENIŁEM or NA and   
-    if (ActionInput not in MovementAction) and (ActionInput not in OtherAction) and (ActionInput not in DebugAction):
+    if (ActionInput not in MovementAction) and (ActionInput not in OtherAction) and (ActionInput not in DebugAction) and (ActionInput != "questy"):
         print("???")
     return ActionInput, Lokacja, LocMoveset
 
@@ -7163,7 +7161,7 @@ def LocDescCheck(Lokacja, DaneWszystkichQuestów):
     if Lokacja == 4:
         loc4()
     if Lokacja == 5:
-        loc6()
+        loc5()
     if Lokacja == 6:
         loc6()
     if Lokacja == 7:
@@ -7178,13 +7176,9 @@ def LocDescCheck(Lokacja, DaneWszystkichQuestów):
         loc11()
     if Lokacja == 12 and DaneWszystkichQuestów[1][0] == 0:
         DaneWszystkichQuestów[1][0] = 1
-        print('[1][0]:',DaneWszystkichQuestów[1][0])
-        print('[1][1]:',DaneWszystkichQuestów[1][1])
-        print('[1][2]:',DaneWszystkichQuestów[1][2])
         loc13()
+        print()
         print('Otrzymano zadanie: Miejscowy Bohater')
-        print()
-        print()
         print()
     if Lokacja == 12 and DaneWszystkichQuestów[1][0] == 1 or DaneWszystkichQuestów[1][0] == 3:
         loc12()
@@ -7266,9 +7260,6 @@ Lokacja = 1
 DaneWszystkichQuestów=Questy()
 #print(DaneWszystkichQuestów)
 #print()
-print('[1][0]:',DaneWszystkichQuestów[1][0])
-print('[1][1]:',DaneWszystkichQuestów[1][1])
-print('[1][2]:',DaneWszystkichQuestów[1][2])
 while Lokacja != 0 and start == 1: #lokacja 0 to GAME OVER
     #LocDescCheck(Lokacja)
     LocDescCheck(Lokacja,DaneWszystkichQuestów)
@@ -7327,6 +7318,24 @@ while Lokacja != 0 and start == 1: #lokacja 0 to GAME OVER
         lookforinvtype(ActionInput)
     #(lookforinv, ActionInput)=itemuse(lookforinv,ActionInput)
     lookforinventory(lookforinv,ActionInput,item)
+    
+    if ActionInput == 'questy':
+        if DaneWszystkichQuestów[1][0] == 1:
+            print()
+            print('Nazwa: {}'.format(DaneWszystkichQuestów[1][1]))
+            print('Opis: {}'.format(DaneWszystkichQuestów[1][2]))
+            print('Zleceniodawca: {}'.format(DaneWszystkichQuestów[1][3]))
+        print()
+        if DaneWszystkichQuestów[1][0] == 0 or DaneWszystkichQuestów[1][0] == 3:
+            print('Nie masz żadnych zadań!')
+            print()
+            
+            
+            
+       
+        
+            
+        
 
     
 
