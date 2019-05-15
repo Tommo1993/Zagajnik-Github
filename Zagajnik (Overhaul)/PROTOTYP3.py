@@ -1,3 +1,4 @@
+
 import time
 import random
 from data.locdesc import *
@@ -58,7 +59,7 @@ def Bronie(defineinventory,item):
 #####OBRAŻENIA#####
 
 #####SYSTEM WALKI#####
-tekstBrakuMany="Nie masz many! WRÓĆ lub Wybierz"		
+tekstBrakuMany="Nie masz many! WRÓĆ lub Wybierz"
 class EnemyStats:
     def __init__(self, name, ID, HP, MP, attackdmg, EXPreward):
         self.name = name
@@ -194,47 +195,80 @@ def Występowanie_Przeciwnika(Lokacja,entity):
             print()
             print()
             print()
-def FirstBlood(entity,player,playerOutputDMG):
-    Trucizna = 0
-    Trucizna1 = 0
-    if entity.attackdmg > playerOutputDMG:
-        Atak(player,entity)
-    if entity.attackdmg < playerOutputDMG:
-        WybórPrzeciwnika(player,entity,Trucizna)
-    if entity.attackdmg == playerOutputDMG:
-        LosAtaku=random.randint(0,2)
-        if LosAtaku==1:
-            Wybór(player,entity,Trucizna1)
-        if LosAtaku==2:
-            WybórPrzeciwnika(player,entity,Trucizna)
 
-def Wybór(player,entity,Trucizna1):
-    if Trucizna1 == 4:
-        Trucizna1 = 0
-    if Trucizna1 in range (0,3):
-        player.HP-=3
-        print("Otruto cię!")
-    if Trucizna1 > 0:
-        Trucizna1 += 1
-    print("Chcesz użyć ATAK, MAGIA, EKWIPUNEK, czy UCIECZKA?")
-    wybór=str(input())
-    if wybór == "ATAK":
-        Atak(player,entity)
-    if wybór == "MAGIA":
-        Magia(player,entity)
-   # if wybór == "EKWIPUNEK": I tu Berto z pomocą idą podki i inne pierdoły
-    if wybór =="UCIECZKA":
-        if player.dex*0.6+player.HP*0.6-entity.attackdmg*0.2>5:
-            A=1     #(kontunuuje dalej do funkcji opisu i czynności danej lokacji) to A=1, bo błąd wyskakiwał
+def MagiaWroga(player,entity):
+    MagicEntDec=random.randint(0,6) 
+    def KulaOgnia1(player,entity):
+            entity.MP -= 3
+            player.HP -= 5
+            Wybór(player,entity)
+            return player,entity
+    def WysysanieŻycia1(player,entity):
+            entity.MP -= 5
+            player.HP -= 2
+            entity.HP += 2
+            Wybór(player,entity)
+            return player,entity
+    def MroźnyPodmuch1(player,entity):
+            entity.MP -= 5
+            player.HP -= 4
+            Wybór(player,entity)
+            return player,entity
+    def Bertserker1(player,entity):
+            entity.HP -= 2
+            entity.MP -= 5
+            player.HP -= 9
+            Wybór(player,entity)
+            return player,entity
+    def Wstrząs1(player,entity):
+            entity.MP -= 6
+            player.HP -= 4
+            player.MP -= 3
+            Wybór(player,entity)
+            return player,entity
+    def Otrucie1(player,entity):
+            entity.MP -= 7
+            player.HP -= 3
+            Wybór(player,entity)
+            Trucizna1 = 1
+            return player, entity
+    if MagicEntDec==1: # gdy test się nie uda Robi cały proceder raz jeszcze
+        if entity.MP >= 3:
+            KulaOgnia1(player,entity)
         else:
-            print("Twoja ucieczka się nie powiedzie. GUŁAG albo SUDOKU")
-            ssij=str(input())
-            if ssij == "GUŁAG":
-                WybórPrzeciwnika(player,entity,Trucizna)
-            if ssij =="SUDOKU":
-                player.HP=0
-            
-                
+            del MagicEntDec # OPtyMaLIZacJa BErTO
+            MagiaWroga(player,entity)
+    if MagicEntDec==2:
+        if entity.MP >= 5:
+            WysysanieŻycia1(player,entity)
+        else:
+            del MagicEntDec
+            MagiaWroga(player,entity)
+    if MagicEntDec==3:
+        if entity.MP >= 5:
+            MroźnyPodmuch(player,entity)
+        else:
+            del MagicEntDec
+            MagiaWroga(player,entity)
+    if MagicEntDec==4:
+        if entity.MP >= 5 and entity.HP > 2: # no bo jak byłoby równe to by był autokil heh
+            Bertserker1(player,entity)
+        else:
+            del MagicEntDec
+            MagiaWroga(player,entity)
+    if MagicEntDec==5:
+        if entity.MP >= 6:
+            Wstrząs1(player,entity)
+        else:
+            del MagicEntDec
+            MagiaWroga(player,entity)
+    if MagicEntDec==6:
+        if entity.MP >= 7:
+            Otrucie1(player,entity)
+        else:
+            del MagicEntDec
+            MagiaWroga
+
 def Magia(player,entity):
     print("Co chciałbyś wybrać?")
     print("(Aby użyć coś innego wpisz WRÓĆ.)")
@@ -458,115 +492,19 @@ def Magia(player,entity):
     if Magicstr not in Magiclist and Magicstr != "WRÓĆ":
         print("Chyba coś pomyliłeś.")
         #miejsce celowo pozostawione puste
-def MagiaWroga(player,entity):
-    MagicEntDec=random.randint(0,6) 
-    def KulaOgnia1(player,entity):
-            entity.MP -= 3
-            player.HP -= 5
-            Wybór(player,entity)
-            return player,entity
-    def WysysanieŻycia1(player,entity):
-            entity.MP -= 5
-            player.HP -= 2
-            entity.HP += 2
-            Wybór(player,entity)
-            return player,entity
-    def MroźnyPodmuch1(player,entity):
-            entity.MP -= 5
-            player.HP -= 4
-            Wybór(player,entity)
-            return player,entity
-    def Bertserker1(player,entity):
-            entity.HP -= 2
-            entity.MP -= 5
-            player.HP -= 9
-            Wybór(player,entity)
-            return player,entity
-    def Wstrząs1(player,entity):
-            entity.MP -= 6
-            player.HP -= 4
-            player.MP -= 3
-            Wybór(player,entity)
-            return player,entity
-    def Otrucie1(player,entity):
-            entity.MP -= 7
-            player.HP -= 3
-            Wybór(player,entity)
-            Trucizna = 1
-            return player, entity
-    if MagicEntDec==1: # gdy test się nie uda Robi cały proceder raz jeszcze
-        if entity.MP >= 3:
-            KulaOgnia1(player,entity)
-        else:
-            del MagicEntDec # OPtyMaLIZacJa BErTO
-            MagiaWroga(player,entity)
-    if MagicEntDec==2:
-        if entity.MP >= 5:
-            WysysanieŻycia1(player,entity)
-        else:
-            del MagicEntDec
-            MagiaWroga(player,entity)
-    if MagicEntDec==3:
-        if entity.MP >= 5:
-            MroźnyPodmuch(player,entity)
-        else:
-            del MagicEntDec
-            MagiaWroga(player,entity)
-    if MagicEntDec==4:
-        if entity.MP >= 5 and entity.HP > 2: # no bo jak byłoby równe to by był autokil heh
-            Bertserker1(player,entity)
-        else:
-            del MagicEntDec
-            MagiaWroga(player,entity)
-    if MagicEntDec==5:
-        if entity.MP >= 6:
-            Wstrząs1(player,entity)
-        else:
-            del MagicEntDec
-            MagiaWroga(player,entity)
-    if MagicEntDec==6:
-        if entity.MP >= 7:
-            Otrucie1(player,entity)
-        else:
-            del MagicEntDec
-            MagiaWroga
 
-
-def DeathStats(player,entity):
-    if entity.HP<0:
-        entity.HP=0
-        LosWroga=random.randint(0,5)
-    if player.HP == MaxHP:
-        LosWroga2= " i wcale cię nie ruszyli Wilk syty i owca, no cóż..."
-    if player.HP <= MaxHP - MaxHP*0.1 and player.HP >= MaxHP - MaxHP*0.3:
-        LosWroga2= ", lecz nieźle cię poturbowali."
-    if player.HP <= MaxHP - MaxHP*0.31 and player.HP >= MaxHP - MaxHP*0.5:
-        LosWroga2= ", ale twoje rany szybko się nie zagoją."
-    if player.HP <= MaxHP - MaxHP*0.51 and player.HP >= MaxHP - MaxHP*0.7:
-        LosWroga2= ", ale dali ci w kość."
-    if player.HP <= MaxHP - MaxHP*0.71 and player.HP >= MaxHP - MaxHP*0.99:
-        LosWroga2= ". Mimo to szukałbym medyka. Te rany nie wyglądają dobrze..."
-    if LosWroga==1:
-        print("Uporałeś się z nim. Hura!")
-    if LosWroga==2:
-        print("No, no no... Nieźle ci poszło")
-    if LosWroga==3 or LosWroga==5:
-        print("Nie było źle" + LosWroga2)
-    if LosWroga==4:
-        print("Uporałeś się z nim. Hurra!")
-    if entity.MP<0:
-        entity.MP=0
-        AtakPrzeciwnika(player,entity)
-    if player.HP<0:
-        player.HP=0
-    if  player.MP<0:
-        player.MP=0
-    if player.HP==0:
-        print("U n00b")
-        Lokacja=0 # śmierdź się zrobi później
-        
-
-def Atak(player,entity):
+def WybórPrzeciwnika(player,entity): # czyli jego atak lub magia.
+    if Trucizna in range (0,3):
+        entity.HP -= 3
+    if Trucizna > 0:
+        Trucizna += 1
+    LosDecWalkiPrzeciwnika=random.randint(0,2)
+    if LosDecWalkiPrzeciwnika==1:
+        if entity.MP not in range(0,3):
+            MagiaWroga(player,entity)
+        else:
+            AtakPrzeciwnika(player,entity)
+def Atak(player,entity,Trucizna1):			
     Los=random.randint(0,9)
     if Los==1 or Los==2:
         print("DoStaŁ, ALe PrawIE Go NIe ZarYSOwalIŚmY.")
@@ -603,11 +541,11 @@ def Atak(player,entity):
             entity.HP-=1
             WybórPrzeciwnika(player,entity)
         if LosChybienia==2:
-            print("Ciosy wyprowadza się z nadgarstka, a nie od łokcia.")
+            print("Ciosy wyprowadza się z nadgarstka, a nie od łokcia!!!")
             WybórPrzeciwnika(player,entity)
         if LosChybienia==3:
             print("Słońce oślepiło cię swoim jasnym blaskiem i nie zaatakowałeś.")
-            WyborPrzeciwnika(player,entity)
+            WybórPrzeciwnika(player,entity)
         if LosChybienia==4:
             print("Masz kryzys egzystencjalny.")
             WybórPrzeciwnika(player,entity)
@@ -622,20 +560,7 @@ def Atak(player,entity):
             print("Począłeś dyplomatyczną konwersację z przeciwnikiem, lecz on nie podzielał ")
             print("twoich pacyfistycznych intencji.")
             WybórPrzeciwnika(player,entity)
-def WybórPrzeciwnika(player,entity,Trucizna): # czyli jego atak lub magia.
-    if Trucizna == 4:
-        Trucizna = 0
-    if Trucizna in range (0,3):
-        entity.HP -= 3
-    if Trucizna > 0:
-        Trucizna += 1
-    LosDecWalkiPrzeciwnika=random.randint(0,2)
-    if LosDecWalkiPrzeciwnika==1:
-        if entity.MP not in range(0,3):
-            MagiaWroga(player,entity)
-        else:
-            AtakPrzeciwnika(player,entity)
-def AtakPrzeciwnika(player, entity):
+def AtakPrzeciwnika(player,entity):
     Los2=random.randint(0,8)
     Los3=random.randint(0,9)
     if Los3==1 or Los3==2:
@@ -648,55 +573,129 @@ def AtakPrzeciwnika(player, entity):
         LosOrganów = "części płynu mózgowo-rdzeniowego"
     if Los3==9:
         LosOrganów = "ucha"
-    
+
     if Los2==1 or Los2==7:
         print("Twój przeciwnik jakoś oka do tego ataku nie miał.")
-        player.HP-=0.2*entity.attackdamage
-        Wybór(player,entity)
+        player.HP-=0.2*entity.attackdmg
+        Wybór(player,entity,Trucizna1)
     if Los2==2:
         print("I to ma być cios?!")
-        player.HP-=0.4*entity.attackdamage
-        Wybór(player,entity)
+        player.HP-=0.4*entity.attackdmg
+        Wybór(player,entity,Trucizna1)
     if Los2==3:
         print("Jakoś to zniosę. Bywało gorzej.")
-        player.HP-=0.6*entity.attackdamage
-        Wybór(player,entity)
+        player.HP-=0.6*entity.attackdmg
+        Wybór(player,entity,Trucizna1)
     if Los2==4:
         print("Silny skurczybyk jak stu chłopa.")
-        player.HP-=0.8*entity.attackdamage
-        Wybór(player,entity)
+        player.HP-=0.8*entity.attackdmg
+        Wybór(player,entity,Trucizna1)
     if Los2==5:
         print("Twój przeciwnik wie jak zrobić, żeby bolało.")
-        player.HP-=entity.attackdamage
-        Wybór(player,entity)
+        player.HP-=entity.attackdmg
+        Wybór(player,entity,Trucizna1)
     if Los2==6:
         print("Brak" + LosOrganów +  "hmmm... To chyba dobrze.")
-        player.HP-=1.2*entity.attackdamage
-        Wybór(player,entity)
+        player.HP-=1.2*entity.attackdmg
+        Wybór(player,entity,Trucizna1)
     if Los2==7 or Los2==8:
         LosChybienia2=random.randint(0,7)
         if LosChybienia2==1:
             print("Sprzedałeś przeciwnikiowi psztyczka w nos i wytrąciłeś")
             print("go z równowagi.")
-            Wybór(player,entity)
+            Wybór(player,entity,Trucizna1)
         if LosChybienia2==2:
             print("Przeciwnika zaswędziało coś w nosie i musiał odkichnąć.")
-            Wybór(player,entity)
+            Wybór(player,entity,Trucizna1)
         if LosChybienia2==3:
             print("Oponent zobaczył króliczka, a wiesz że ma do nich słabość.")
-            Wybór(player,entity)
+            Wybór(player,entity,Trucizna1)
         if LosChybienia2==4:
             print("Twój wróg umiejętnością się nie popisał.")
-            Wybór(player,entity)
+            Wybór(player,entity,Trucizna1)
         if LosChybienia2==5:
             print("Niemcy proszę pana.")
-            Wybór(player,entity)
+            Wybór(player,entity,Trucizna1)
         if LosChybienia2==6:
             print("Twój antagonista poślizgnął się na kawałku słomy z twojej zbroi.")
-            Wybór(player,entity)
+            Wybór(player,entity,Trucizna1)
         if LosChybienia2==7:
             print("Twój przeciwnik poszedł AFK.")
-            Wybór(player,entity)
+            Wybór(player,entity,Trucizna1)
+			
+def FirstBlood(entity,player,playerOutputDMG):
+    if entity.attackdmg > playerOutputDMG:
+        Atak(player,entity)
+    if entity.attackdmg < playerOutputDMG:
+        WybórPrzeciwnika(player,entity,Trucizna)
+    if entity.attackdmg == playerOutputDMG:
+        LosAtaku=random.randint(0,2)
+        if LosAtaku==1:
+            Atak(player,entity,Trucizna1)
+        if LosAtaku==2:
+            WybórPrzeciwnika(player,entity,Trucizna)
+
+
+def Wybór(player,entity,Trucizna1):
+    if Trucizna1 == 4:
+        Trucizna1 = 0
+    if Trucizna1 in range (0,3):
+        player.HP-=3
+        print("Otruto cię!")
+    if Trucizna1 > 0:
+        Trucizna1 += 1
+    print("Chcesz użyć ATAK, MAGIA, EKWIPUNEK, czy UCIECZKA?")
+    wybór=str(input())
+    if wybór == "ATAK":
+        Atak(player,entity)
+    if wybór == "MAGIA":
+        Magia(player,entity)
+   # if wybór == "EKWIPUNEK": I tu Berto z pomocą idą podki i inne pierdoły
+    if wybór =="UCIECZKA":
+        if player.dex*0.6+player.HP*0.6-entity.attackdmg*0.2>5:
+            A=1     #(kontunuuje dalej do funkcji opisu i czynności danej lokacji) to A=1, bo błąd wyskakiwał
+        else:
+            print("Twoja ucieczka się nie powiedzie. GUŁAG albo SUDOKU")
+            ssij=str(input())
+            if ssij == "GUŁAG":
+                WybórPrzeciwnika(player,entity,Trucizna)
+            if ssij =="SUDOKU":
+                player.HP=0
+                
+
+
+def DeathStats(player,entity):
+    if entity.HP<0:
+        entity.HP=0
+        LosWroga=random.randint(0,5)
+    if player.HP == MaxHP:
+        LosWroga2= " i wcale cię nie ruszyli Wilk syty i owca, no cóż..."
+    if player.HP <= MaxHP - MaxHP*0.1 and player.HP >= MaxHP - MaxHP*0.3:
+        LosWroga2= ", lecz nieźle cię poturbowali."
+    if player.HP <= MaxHP - MaxHP*0.31 and player.HP >= MaxHP - MaxHP*0.5:
+        LosWroga2= ", ale twoje rany szybko się nie zagoją."
+    if player.HP <= MaxHP - MaxHP*0.51 and player.HP >= MaxHP - MaxHP*0.7:
+        LosWroga2= ", ale dali ci w kość."
+    if player.HP <= MaxHP - MaxHP*0.71 and player.HP >= MaxHP - MaxHP*0.99:
+        LosWroga2= ". Mimo to szukałbym medyka. Te rany nie wyglądają dobrze..."
+    if LosWroga==1:
+        print("Uporałeś się z nim. Hura!")
+    if LosWroga==2:
+        print("No, no no... Nieźle ci poszło")
+    if LosWroga==3 or LosWroga==5:
+        print("Nie było źle" + LosWroga2)
+    if LosWroga==4:
+        print("Uporałeś się z nim. Hurra!")
+    if entity.MP<0:
+        entity.MP=0
+        AtakPrzeciwnika(player,entity)
+    if player.HP<0:
+        player.HP=0
+    if  player.MP<0:
+        player.MP=0
+    if player.HP==0:
+        print("U n00b")
+        Lokacja=0 # śmierdź się zrobi później
 #####SYSTEM WALKI#####
 
 #####SYSTEM QUESTÓW#####
@@ -900,22 +899,27 @@ def ClassChoice(player,item,StartInput):
 #####GRACZ#####
 
 ######ALKOHOLE######
+def Alkohole(DaneWszystkichAlkoholi):
+    #
+    #Alkohol=[0,0,0,0,"","",0] # indeks 0- trwałość, indeks 1- poziom % (od 1 do 10), indeks 2- mnożnik uzależnienia (od 1 do 10), indeks 3- narazie nic, indeks 4- Nazwa, indeks 5- Opis, 6- aktywność.
+    #
+    Denaturat=[10,9,1,1,"Denaturat","Nemezis twojej wątroby i układu nerwowego.",0]
+    KordiałZeStokrotek=[4,5,2,1,"Kordiał ze stokrotek","Szlachecki trunek z miętowym posmakiem.",0]
+    TrillskieJasne=[2,1,4,1,"Trillskie jasne","Specjalność browarów Trill.",0]
+ 
+    DaneWszystkichAlkoholi.append(Denaturat)
+    DaneWszystkichAlkoholi.append(KordiałZeStokrotek)
+    DaneWszystkichAlkoholi.append(TrillskieJasne)
+    
+    #turazakończenia = 0    
+    #StopienOdurzenia = DaneWszystkichAlkoholi[0][1]/player.str or DaneWszystkichAlkoholi[1][1]/player.str or DaneWszystkichAlkoholi[2][1]/player.str
+    #StopienUzależnienia = DaneWszystkichAlkoholi[0][2]/player.luck*10 or DaneWszystkichAlkoholi[1][2]/player.luck*10 or DaneWszystkichAlkoholi[2][2]/player.luck*10
+    return DaneWszystkichAlkoholi
 
-def Alkohole():
-    Alkohol1=[0,0,0,0,"","",0] # indeks 0- trwałość, indeks 1- poziom % (od 1 do 10), indeks 2- mnożnik uzależnienia (od 1 do 10), indeks 3- narazie nic, indeks 4- Nazwa, indeks 5- Opis, 6- aktywność.
-    Denaturat=[9,1,1,"Denaturat","Nemezis twojej wątroby i układu nerwowego.",0]
-    DaneWszystkichAlkoholi.append(Denaturat)  
-    
-    
-    
-def SprawdzanieAlkoholi():
-    CzyWypite() = 0
-    StopienOdurzenia = DaneWszystkichAlkoholi[][1]/player.str
-    StopienUzależnienia = DaneWszystkichAlkoholi[][2]/player.luck*10
+def SprawdzanieAlkoholi(DaneWszystkichAlkoholi,player,StopienOdurzenia,StopienUzależnienia,Turn,turazakończenia):
+    turazakończenia = 0    
     while DaneWszystkichAlkoholi[0][6] == 1 or DaneWszystkichAlkoholi[1][6] == 1 or DaneWszystkichAlkoholi[2][6] == 1:
-        StopienOdurzenia = DaneWszystkichAlkoholi[0][1]/player.str or DaneWszystkichAlkoholi[1][1]/player.str or DaneWszystkichAlkoholi[2][1]/player.str
-        StopienUzależnienia = DaneWszystkichAlkoholi[0][2]/player.luck*10 or DaneWszystkichAlkoholi[1][2]/player.luck*10 or DaneWszystkichAlkoholi[2][2]/player.luck*10
-        if StopienOdurzenia =< 1:
+        if StopienOdurzenia <= 1:
             print('To było za dużo jak na takiego suchoklatesa jak ty, kmiotku.')
             player.HP = player.HP-10
             player.str = player.str-7
@@ -928,7 +932,20 @@ def SprawdzanieAlkoholi():
             player.str = player.str+2
             player.end = player.end+2
             player.dex = player.dex+2
-    if StopienUzależnienia =< 1000:
+        if DaneWszystkichAlkoholi[0][6] == 1:
+            turazakończenia = Turn + DaneWszystkichAlkoholi[0][0]
+            if turazakończenia == Turn:
+                DaneWszystkichAlkoholi[0][6] == 0
+        if DaneWszystkichAlkoholi[1][6] == 1:
+            turazakończenia = Turn + DaneWszystkichAlkoholi[1][0]
+            if turazakończenia == Turn:
+                DaneWszystkichAlkoholi[1][6] == 0
+        if DaneWszystkichAlkoholi[2][6] == 1:
+            turazakończenia = Turn + DaneWszystkichAlkoholi[2][0]
+            if turazakończenia == Turn:
+                DaneWszystkichAlkoholi[2][6] == 0
+    return DaneWszystkichAlkoholi, player, StopienOdurzenia, StopienUzależnienia, Turn, turazakończenia
+    if StopienUzależnienia <= 1000:
         print('Brawo, zostałeś alkoholikiem!')
         if DaneWszystkichAlkoholi[0][6] != 1 or DaneWszystkichAlkoholi[1][6] != 1 or DaneWszystkichAlkoholi[2][6] != 1:
             player.MaxHPnocalc = player.MaxHPnocalc-5
@@ -937,6 +954,7 @@ def SprawdzanieAlkoholi():
             player.str = player.str-2
             player.dex = player.dex-2
             player.end = player.end-2
+        return DaneWszystkichAlkoholi, player, StopienOdurzenia, StopienUzależnienia, Turn, turazakończenia
         if DaneWszystkichAlkoholi[0][6] == 1 or DaneWszystkichAlkoholi[1][6] == 1 or DaneWszystkichAlkoholi[2][6] == 1:
             player.MaxHPnocalc = player.MaxHPnocalc-1
             player.MaxMPnocalc = player.MaxMPnocalc-1
@@ -944,6 +962,7 @@ def SprawdzanieAlkoholi():
             player.str = player.str-1
             player.dex = player.dex-1
             player.end = player.end-1
+        return DaneWszystkichAlkoholi, player, StopienOdurzenia, StopienUzależnienia, Turn, turazakończenia
             #BERTEK PAMIĘTAJ O ZROBIENIU TRWAŁOŚCI EFEKTÓW, ALKOHOLIZM MOŻNA WYLECZYĆ JEDYNIE WYPIJAJĄC SPECJALNĄ POTKĘ.
             #OK!
             
@@ -7384,12 +7403,13 @@ while Lokacja != 0 and start == 1: #lokacja 0 to GAME OVER
     LocMoveset=LocMovesetCheck(Lokacja)
     if LocMoveset[4] == 1:
         #ObrażeniaWychodzące(ObrażeniaCięte, ObrażeniaKłute, ObrażeniaObuchowe, player)
-        playerOutputDMG = 3
         entity = EnemyStats("",1,0,0,0,0)
+        entity.ID = 1
         EnemySpawn(entity)
-        FirstBlood(entity,player,playerOutputDMG)
+        playerOutputDMG = 3
         LocMoveset[4] = 0
         Loc17Moveset[4] = 0
+        FirstBlood(entity,player,playerOutputDMG,Trucizna,Trucizna1)
     if LocMoveset[4] != 0 or LocMoveset[5] != 0:
         EventHandler(LocMoveset,item,player,ActionInput,MovementAction,Loc7Moveset)
         if player.HP <= 0:
@@ -7444,6 +7464,12 @@ while Lokacja != 0 and start == 1: #lokacja 0 to GAME OVER
         lookforinvtype(ActionInput)
     #(lookforinv, ActionInput)=itemuse(lookforinv,ActionInput)
     lookforinventory(lookforinv,ActionInput,item)
+        lookforinventory(lookforinv,ActionInput,item)
+    DaneWszystkichAlkoholi=[]
+    DaneWszystkichAlkoholi=Alkohole(DaneWszystkichAlkoholi)
+    StopienOdurzenia=()
+    StopienOdurzenia = DaneWszystkichAlkoholi[0][1]/player.str or DaneWszystkichAlkoholi[1][1]/player.str or DaneWszystkichAlkoholi[2][1]/player.str
+    StopienUzależnienia = DaneWszystkichAlkoholi[0][2]/player.luck*10 or DaneWszystkichAlkoholi[1][2]/player.luck*10 or DaneWszystkichAlkoholi[2][2]/player.luck*10
     Turn=(TurnCounter(Turn))
     if ActionInput == 'questy':
         if DaneWszystkichQuestów[1][0] == 1:
@@ -7455,6 +7481,14 @@ while Lokacja != 0 and start == 1: #lokacja 0 to GAME OVER
         if DaneWszystkichQuestów[1][0] == 0 or DaneWszystkichQuestów[1][0] == 3:
             print('Nie masz żadnych zadań!')
             print()
+    #turazakończenia PROWIZORYCZNIE ustawiona 0 zero...
+    #turazakończenia powinna być listą na wypadek gdyby gracz wypił kilka alkoholi
+    #albo różne tury zakońćzenia dla różnych substancji
+    turazakończenia=0
+    (DaneWszystkichAlkoholi, player, StopienOdurzenia, StopienUzależnienia, Turn, turazakończenia)=SprawdzanieAlkoholi(DaneWszystkichAlkoholi,player,StopienOdurzenia, StopienUzależnienia,Turn, turazakończenia)
+#StopienOdurzenia
+#StopienUzależnienia
+#turazakończenia
             
             
             
