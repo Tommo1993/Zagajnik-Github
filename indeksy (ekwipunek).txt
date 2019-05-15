@@ -1,0 +1,44 @@
+Przedmioty noszone:
+slot 0 = czy jakiœ przedmiot tam jest,
+slot 1 = nazwa, slot 2 = opis, slot 3 = typ, slot 4 = podtyp,
+slot 5 = +hp, slot 6 = +mp, slot 7 = maxhp, slot 8 = maxmp,
+slot 9 = +exp, slot 10 = str, slot 11 = dex, slot 12 = int,
+slot 13 = end, slot 14 = luck, slot 15 = weapon dmg, slot 16 = ID,
+slot 17 = obrona przed obr. k³utymi, slot 18 = obrona przed obr. ciêtymi,
+slot 19 = obrona przed obr. obuchowymi, slot 20 = Typy Obra¿eñ
+Przedmioty w ekwipunku:
+slot 0 = czy jakiœ przedmiot tam jest, slot 1 = iloœæ,
+slot 2 = nazwa, slot 3 = opis, slot 4 = typ, slot 5 = podtyp,
+slot 6 = +hp, slot 7 = +mp, slot 8 = maxhp, slot 9 = maxmp,
+slot 10 = +exp, slot 11 = str, slot 12 = dex, slot 13 = int,
+slot 14 = end, slot 15 = luck, slot 16 = weapon dmg, slot 17 = ID,
+slot 18 = obrona przed obr. k³utymi, slot 19 = obrona przed obr. ciêtymi,
+slot 20 = obrona przed obr. obuchowymi, slot 21 = Typy obra¿eñ
+item.itemslotactive1 = armor
+item.itemslotactive2 = armor
+item.itemslotactive3 = armor
+item.itemslotactive4 = armor
+item.itemslotactive5 = armor
+item.itemslotactive6 = armor
+item.itemslothead = armor
+item.itemslotchest = armor
+item.itemslotarms = armor
+item.itemslothands = armor
+item.itemslotlegs = armor
+item.itemslotfoot = armor
+item.itemslotacc1 = armor
+item.itemslotacc2 = armor
+item.itemslotacc3 = armor
+item.itemslotweapon1 = weapon
+item.itemslotweapon2 = weapon
+typy:
+- weapon,
+- armor,
+- food,
+- consumable,
+- ammo,
+podtypy:
+- tarcza, miecz, (dla broni, lista niepe³na)
+- armorhead, armorchest, armorarms, armorhands, armorlegs, armorfoot (dla zbroji)
+- armoracc (akcesoria)
+- armoractive (przedmioty aktywne)
