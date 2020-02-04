@@ -7464,7 +7464,7 @@ while Lokacja != 0 and start == 1: #lokacja 0 to GAME OVER
         lookforinvtype(ActionInput)
     #(lookforinv, ActionInput)=itemuse(lookforinv,ActionInput)
     lookforinventory(lookforinv,ActionInput,item)
-        lookforinventory(lookforinv,ActionInput,item)
+    lookforinventory(lookforinv,ActionInput,item)
     DaneWszystkichAlkoholi=[]
     DaneWszystkichAlkoholi=Alkohole(DaneWszystkichAlkoholi)
     StopienOdurzenia=()
