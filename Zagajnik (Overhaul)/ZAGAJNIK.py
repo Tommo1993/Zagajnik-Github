@@ -1,13 +1,6 @@
 import time
 import random
 from data.locdesc import *
-#from data.locdefs import *
-#from data.enemydefs import *
-#from data.enemylist import *
-#from data.itemdefs import *
-#from data.leveldefs import *
-#from data.statdefs import PlayerStats
-#from data.classdefs import ClassDefs
 
 #####SYSTEM QUESTÓW#####
 def Questy():
@@ -60,9 +53,8 @@ def KoniecQuesta(player, Questy):
     item.gold += DaneQuesta[6]
     OtrzymanyPRZEDMIOT = DaneQuesta[4]
     return player.EXP
-    return item.gold
 
-def SzukanieMiejscaNaPrzedmiot(item, KoniecQuesta):
+def SzukanieMiejscaNaPrzedmiot(KoniecQuesta):
     SprawdzenieMiejsca = []
     
     if item.inventoryslot1[0] == 0:
@@ -171,7 +163,7 @@ class PlayerStats:
         player.statpoint = statpoint
         player.pclass = pclass
         player.subclass = subclass
-def ClassChoice(player,item,StartInput):		
+def ClassChoice(player,StartInput):		
     if StartInput == "1" or StartInput == "zbrojny":
         print("Twoja klasa to zbrojny.")
         player.MaxHP == 20
@@ -184,13 +176,6 @@ def ClassChoice(player,item,StartInput):
         player.end = 2
         player.luck = 1
         player.pclass = 1
-        item.itemslotchest = [1,"Stary skórzany napierśnik","Jeszcze się trzyma...","armor","armorchest",0,0,0,0,0,0,0,0,0,0,0,0,0.1,0.1,0.05,0]
-        item.itemslotlegs = [1,"Dziurawe włókniane spodnie","Więcej dziur niż nitek.","armor","armorlegs",0,0,0,0,0,0,0,0,0,0,0,0,0,0.05,0,0]
-        item.itemslotfoot = [1,"Buty bez podeszwy","ochroniają podbicie stopy przed podmuchem wiatru!","armor","armorfoot",0,0,0,0,0,0,0,0,0,0,0,0,0.05,0.05,0.5,0]
-        item.itemslotweapon1 = [1,"Drewniana pałka","W zasadzie grubszy kij.","weapon","mace",0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,3]
-        item.inventoryslot1 = [1,2,"Bochenek Chleba","Czerstwy, ale da się zjeść.","consumable","food",4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-        item.inventoryslot2 = [1,1,"Bukłak wody","Mmm... bardzo błotnista i prosto z bagna.","consumable","food",0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-        
     if StartInput == "2" or StartInput == "zwiadowca":
         rint("Twoja klasa to zwiadowca.")
         player.MaxHP == 15
@@ -205,70 +190,10 @@ def ClassChoice(player,item,StartInput):
         player.MaxMP == 15
         player.MP == 15
         player.pclass = 3
-    return player, item
+    return player
 
 #####GRACZ#####
 
-#####WYDARZENIA#####
-def EventHandler(LocMoveset,item,player,ActionInput,Loc7Moveset):
-    if LocMoveset[5] == 1:
-        print("Między kamyczkami na dnie widzisz mieniącą się złotą monetę")
-        print("Czy chciałbyś ją podnieść? (Tak/Nie)")
-        while ActionInput != "tak" or ActionInput != "nie":
-            ActionInput = input().lower()
-            if ActionInput == "tak":
-                item.gold+=1
-                print("Podniosłeś złotą monetę")
-                print("Dodano: +1 Korona")
-                ActionInput = ""
-                LocMoveset[5] = 0
-                Loc5Moveset[5] = 0
-                return LocMoveset, item, player, ActionInput, MovementAction, Loc5Moveset
-            if ActionInput == "nie":
-                print("Postanawaiasz zostawić monetę w spokoju.")
-                break
-    if LocMoveset[5] == 2:
-        while ActionInput != "tak" or ActionInput != "nie":
-            ActionInput = input().lower()
-            if ActionInput in MovementNorth:
-                return LocMoveset, item, player, ActionInput, MovementAction, Loc5Moveset
-            if ActionInput == "tak":
-                print("...Mmmm... Cóż za soczysty zapach...")
-                time.sleep(3)
-                print("Giniesz krótko po tym gdy próbowałeś pocałować ogra.")
-                print("Nawet taki zwierzoczłowiek ma jakieś podstawy moralne...")
-                time.sleep(3)
-                player.HP = 0
-                LocMoveset[5] = 0
-                return LocMoveset, item, player, ActionInput, MovementAction, Loc5Moveset
-            if ActionInput == "nie":
-                print('Dobry wybór Kmiotku.')
-                print("Możesz spokojnie odejść...")
-                LocMoveset[5] = 0
-                break
-    if LocMoveset[5] == 3:
-        while ActionInput != "tak" or ActionInput != "nie":
-            ActionInput = input().lower()
-            if ActionInput in MovementEast:
-                return LocMoveset, item, player, ActionInput, MovementAction, Loc5Moveset
-            if ActionInput == "tak":
-                print('...Powoli wsadzasz palec w żar...')
-                time.sleep(2)
-                print('Dziwnym przypadkiem po chwilowym bólu tracisz czucie w palcu...')
-                time.sleep(2)
-                print('Totalnie przypadkowo twój palec zostaje w ognisku.')
-                time.sleep(2)
-                strata = random.randint(1,3)
-                player.HP -= strata
-                print("Straciłeś",strata,"HP!")
-                LocMoveset[5] = 0
-                return LocMoveset, item, player, ActionInput, MovementAction, Loc5Moveset
-            if ActionInput == "nie":
-                print('Dobry wybór Kmiotku.')
-                print("Możesz spokojnie odejść...")
-                LocMoveset[5] = 0
-                break
-#####WYDARZENIA#####
 
 #####GŁÓWNY MODUŁ#####
 akcja=['North','South','East','West','n','s','w','e','Zjedz','Użyj','Opis','Atakuj','Zagadaj']
@@ -279,7 +204,7 @@ MovementEast=['east','e']
 MovementWest=['west','w']
 OtherAction=['zjedz','użyj','opis','atakuj','zagadaj', 'ubierz', 'dobądź', 'zdejmij', 'schowaj', 'ekwipunek', 'weź']
 ItemAction=['zjedz','użyj','opis','ubierz','dobądź','zdejmij','schowaj','ekwipunek']
-DebugAction=['debug','additem']
+DebugAction=['debug']
 LocMoveset=[0,0,0,0,0,0]
 Loc1Moveset=[2,0,0,0,0,0] #W kolejności North(0)/South(1)/East(2)/West(3)/Wróg w Lokacji(4)/Wydarzenie(5)
 Loc2Moveset=[3,0,0,0,0,0]
@@ -387,13 +312,11 @@ def ActionCheck(ActionInput,Lokacja,LocMoveset): #nie testowane, powiedzmy że d
             print("przeniesione")
     if ActionInput in DebugAction:
         if ActionInput == 'debug':
-            print("Jakieś dane tu się będą pokazywać")
-     #NIŻEJ ZMIENIŁEM or NA and   
+            print("Jakieś dane tu się będą pokazywać") 
     if (ActionInput not in MovementAction) and (ActionInput not in OtherAction) and (ActionInput not in DebugAction) and (ActionInput != "questy"):
         print("???")
     return ActionInput, Lokacja, LocMoveset
 
-#def LocDescCheck(Lokacja):
 def LocDescCheck(Lokacja, DaneWszystkichQuestów):
     if Lokacja == 1:
         loc1()
@@ -482,7 +405,7 @@ while start == 0:
             print("Wybierz swoją klasę...")
             print("Zbrojny (1), zwiadowca (2), łotr (3)...")
             StartInput = input().lower()
-            ClassChoice(player,item,StartInput)
+            ClassChoice(player,StartInput)
             if StartInput in xxx:
                 xyz = 0
     if StartInput == "kontynuuj":
@@ -498,22 +421,17 @@ while start == 0:
 
 Lokacja = 1
 DaneWszystkichQuestów=Questy()
-#print(DaneWszystkichQuestów)
-#print()
 while Lokacja != 0 and start == 1: #lokacja 0 to GAME OVER
-    #LocDescCheck(Lokacja)
     LocDescCheck(Lokacja,DaneWszystkichQuestów)
     LocMoveset=LocMovesetCheck(Lokacja)
     if LocMoveset[4] != 0 or LocMoveset[5] != 0:
-        EventHandler(LocMoveset,item,player,ActionInput,MovementAction,Loc7Moveset)
         if player.HP <= 0:
             Lokacja = 0
         if ActionInput not in MovementAction:
             ActionInput = input().lower()
     if LocMoveset[5] == 0 and LocMoveset[4] == 0:
         ActionInput = input().lower()
-    
-    #to zmieniłem i TO JEST KLUCZOWE:
+
     (ActionInput,Lokacja,LocMoveset)=ActionCheck(ActionInput,Lokacja,LocMoveset)
     
     
