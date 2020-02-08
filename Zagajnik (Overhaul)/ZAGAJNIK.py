@@ -350,7 +350,7 @@ def clear():
     print(clear)
 
 ActionInput = ""
-player = PlayerStats(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+
 
 ###########################################################################
 ###########################################################################
@@ -389,16 +389,17 @@ while True:
     player.calcmaxmp()
     player.calcdamage()
     player.calclevel()
+    print() #TEMP FIX
     ActionInput = input("[{} HP] [{} MP] [{} XP] [{} LVL] {}".format(player.HP,player.MP,player.XP,player.level,"\n")).lower()
     #zmieniłem inputa, powinien działać tak samo
-    if x == "stats":
+    if ActionInput == "stats":
         player.displaystats()
-    if x == "addxp":
+    if ActionInput == "addxp":
         player.XP += 50
         print("dodano 50 xp")
-    if x == "lvlup" and player.statpoints <= 0:
+    if ActionInput == "lvlup" and player.statpoints <= 0:
         print("nie masz wystarczająco punktów")
-    if x == "lvlup" and player.statpoints > 0:
+    if ActionInput == "lvlup" and player.statpoints > 0:
         y = input("wybierz, którą statystykę chcesz ulepszyć (str/dex/int/end/luck)")
         if y == "str":
             player.pointsspentstr += 1
