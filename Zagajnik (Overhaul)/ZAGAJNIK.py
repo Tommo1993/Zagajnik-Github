@@ -1,6 +1,10 @@
 import time
 import random
-from data.locdesc import *
+from time import sleep
+##### EKWIPUNEK ######
+# WSZYSTKIE ITEMY BĘDĄ OPISANE W FORMIE SłOWNIKÓW : ITEM = {"name": nazwa_przedmiotu, "type": typ_przedmiotu, "doIhave": True/False (kolejne statystyki)}
+from data.itemdefs import items
+from data.inventory import inventory
 
 #####SYSTEM QUESTÓW#####
 def Questy():
@@ -196,179 +200,38 @@ def ClassChoice(player,StartInput):
 
 
 #####GŁÓWNY MODUŁ#####
-akcja=['North','South','East','West','n','s','w','e','Zjedz','Użyj','Opis','Atakuj','Zagadaj']
-MovementAction=['north','n','south','s','east','e','west','w']
-MovementNorth=['north','n']
-MovementSouth=['south','s']
-MovementEast=['east','e']
-MovementWest=['west','w']
+akcja=['Zjedz','Użyj','Opis','Atakuj','Zagadaj']
 OtherAction=['zjedz','użyj','opis','atakuj','zagadaj', 'ubierz', 'dobądź', 'zdejmij', 'schowaj', 'ekwipunek', 'weź']
 ItemAction=['zjedz','użyj','opis','ubierz','dobądź','zdejmij','schowaj','ekwipunek']
 DebugAction=['debug']
-LocMoveset=[0,0,0,0,0,0]
-Loc1Moveset=[2,0,0,0,0,0] #W kolejności North(0)/South(1)/East(2)/West(3)/Wróg w Lokacji(4)/Wydarzenie(5)
-Loc2Moveset=[3,0,0,0,0,0]
-Loc3Moveset=[0,2,4,9,0,0] #Skrzyżowanie
-Loc4Moveset=[5,0,7,3,0,0] #0 = "Tam nie pójdziesz'
-Loc5Moveset=[0,4,0,0,0,0] #Strumyk
-#Loc6Moveset=[0,0,0,0] #Alternatywna wersja strumyka
-Loc7Moveset=[0,8,0,4,0,1]
-Loc8Moveset=[7,0,0,0,0,0] #Obóz ogrów w zagajniku
-Loc9Moveset=[10,0,3,11,0,0]
-Loc10Moveset=[12,9,0,0,0,0]
-Loc11Moveset=[0,0,9,0,0,0] #Ognisko w Zagajniku
-Loc12Moveset=[14,10,0,0,0,0] #Południowa brama Crosset
-#Loc13Moveset=[0,0,0,0] #alternatywna wersja bramy
-Loc14Moveset=[19,12,16,15,0,0] #skrzyzowanie crosset
-Loc15Moveset=[20,0,14,0,0,0] #ulica pszenna crosset
-Loc16Moveset=[17,0,21,14,0,0] #ulica targowa crosset
-Loc17Moveset=[0,16,0,0,0,0] #zaułek
-#Loc18Moveset=[0,0,0,0] #alternatywny zaułek
-Loc19Moveset=[0,14,0,0,0,0] #wieża straznicza crosset
-Loc20Moveset=[0,15,0,0,0,0] #piekarnia crosset
-Loc21Moveset=[0,0,0,16,0,0] #kuźnia crosset
-
-
+InformacjeLokacji = [[1,0,0,0],[0,0]]
 def ActInput(ActionInput):
     ActionInput = input().lower()
     return ActionInput
-    
-def LocMovesetCheck(Lokacja):
-    if Lokacja == 1:
-        LocMoveset=Loc1Moveset
-    if Lokacja == 2:
-        LocMoveset=Loc2Moveset
-    if Lokacja == 3:
-        LocMoveset=Loc3Moveset
-    if Lokacja == 4:
-        LocMoveset=Loc4Moveset
-    if Lokacja == 5:
-        LocMoveset=Loc5Moveset
-    if Lokacja == 6:
-        LocMoveset=Loc6Moveset
-    if Lokacja == 7:
-        LocMoveset=Loc7Moveset
-    if Lokacja == 8:
-        LocMoveset=Loc8Moveset
-    if Lokacja == 9:
-        LocMoveset=Loc9Moveset
-    if Lokacja == 10:
-        LocMoveset=Loc10Moveset
-    if Lokacja == 11:
-        LocMoveset=Loc11Moveset
-    if Lokacja == 12:
-        LocMoveset=Loc12Moveset
-    if Lokacja == 13:
-        LocMoveset=Loc13Moveset
-    if Lokacja == 14:
-        LocMoveset=Loc14Moveset
-    if Lokacja == 15:
-        LocMoveset=Loc15Moveset
-    if Lokacja == 16:
-        LocMoveset=Loc16Moveset
-    if Lokacja == 17:
-        LocMoveset=Loc17Moveset
-    if Lokacja == 18:
-        LocMoveset=Loc18Moveset
-    if Lokacja == 19:
-        LocMoveset=Loc19Moveset
-    if Lokacja == 20:
-        LocMoveset=Loc20Moveset
-    if Lokacja == 21:
-        LocMoveset=Loc21Moveset
-    return LocMoveset
+helmet = "puste"
+chestplate = "puste"
+legs = "puste"
+gloves = "puste"
+item1 = "puste"
+item2 = "puste"
+item3 = "puste"
+item4 = "puste"
+item5 = "puste"
+ekwipunek = [helmet, chestplate, legs, gloves, item1, item2, item3, item4, item5]
+
     
 
-def ActionCheck(ActionInput,Lokacja,LocMoveset): #nie testowane, powiedzmy że działa
-    #print(MovementAction)
-    if ActionInput in MovementAction:
-        if ActionInput in MovementNorth:
-            #print(LocMoveset)
-            #print(ActionInput)
-            if LocMoveset[0] != 0:
-                Lokacja=LocMoveset[0]
-                #print(Lokacja)
-                #return ActionInput, Lokacja, LocMoveset 
-            if LocMoveset[0] == 0:
-                print("Tam nie pójdziesz")
-                #return ActionInput, Lokacja, LocMoveset
-        if ActionInput in MovementSouth:
-            if LocMoveset[1] != 0:
-                Lokacja=LocMoveset[1]
-            if LocMoveset[1] == 0:
-                print("Tam nie pójdziesz")
-        if ActionInput in MovementEast:
-            if LocMoveset[2] != 0:
-                Lokacja=LocMoveset[2]
-            if LocMoveset[2] == 0:
-                print("Tam nie pójdziesz")
-        if ActionInput in MovementWest:
-            if LocMoveset[3] != 0:
-                Lokacja=LocMoveset[3]
-            if LocMoveset[3] == 0:
-                print("Tam nie pójdziesz")
+def ActionCheck(ActionInput,Lokacja,LocMoveset):
     if ActionInput in OtherAction:
         if ActionInput in ItemAction:
             print("przeniesione")
     if ActionInput in DebugAction:
         if ActionInput == 'debug':
             print("Jakieś dane tu się będą pokazywać") 
-    if (ActionInput not in MovementAction) and (ActionInput not in OtherAction) and (ActionInput not in DebugAction) and (ActionInput != "questy"):
-        print("???")
-    return ActionInput, Lokacja, LocMoveset
+    if (ActionInput not in OtherAction) and (ActionInput not in DebugAction) and (ActionInput != "questy"):
+        print('???')
+    return ActionInput, Lokacja
 
-def LocDescCheck(Lokacja, DaneWszystkichQuestów):
-    if Lokacja == 1:
-        loc1()
-    if Lokacja == 2:
-        loc2()
-    if Lokacja == 3:
-        loc3()
-    if Lokacja == 4:
-        loc4()
-    if Lokacja == 5:
-        loc5()
-    if Lokacja == 6:
-        loc6()
-    if Lokacja == 7:
-        loc7()
-    if Lokacja == 8:
-        loc8()
-    if Lokacja == 9:
-        loc9()
-    if Lokacja == 10:
-        loc10()
-    if Lokacja == 11:
-        loc11()
-    if Lokacja == 12 and DaneWszystkichQuestów[1][0] == 0:
-        DaneWszystkichQuestów[1][0] = 1
-        loc13()
-        print()
-        print('Otrzymano zadanie: Miejscowy Bohater')
-        print()
-    if Lokacja == 12 and DaneWszystkichQuestów[1][0] == 1 or DaneWszystkichQuestów[1][0] == 3:
-        loc12()
-    #if Lokacja == 13:
-        #loc13()
-    if Lokacja == 14:
-        loc14()
-    if Lokacja == 15:
-        loc15()
-    if Lokacja == 16:
-        loc16()
-    if Lokacja == 17:
-        loc17()
-    if Lokacja == 18:
-        loc18()
-    if Lokacja == 19:
-        loc19()
-    if Lokacja == 20:
-        loc20()
-    if Lokacja == 21:
-        loc21()
-    return None #nic nie zwraca, tylko generuje opis 
-#####GŁÓWNY MODUŁ#####
-    
 clear = "\n" * 100
 def clear():
     print(clear)
@@ -376,79 +239,78 @@ def clear():
 ActionInput = ""
 player = PlayerStats(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
 
-#Staty = PlayerStats("edgy", 100, 20, 0, 0, 0, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-#Staty.PlayerName()
-#print(Staty.StatDisplay())
-start = 0
-if start == 0:
-    print("###############################################################")
-    print()
-    print("               Mikołaj, Tomek i Gruby prezentują...")
-    time.sleep(1)
-    print()
-    print("                            ZAGAJNIK")
-    print()
-    time.sleep(1)
-    print("###############################################################")
-    print()
-    print("Nowa Gra   -   Kontynuuj   -   Wczytaj   -   Opcje   -   Wyjdź")
-    print()
-    print()
-while start == 0:
-    StartInput = input().lower()
-    if StartInput == "nowa gra":
-        Lokacja = 1
-        start = 1
-        xyz = 1
-        xxx = ["zbrojny","1","zwiadowca","2","łotr","3"]
-        while xyz == 1:
-            print("Wybierz swoją klasę...")
-            print("Zbrojny (1), zwiadowca (2), łotr (3)...")
-            StartInput = input().lower()
-            ClassChoice(player,StartInput)
-            if StartInput in xxx:
-                xyz = 0
-    if StartInput == "kontynuuj":
-        print("Czy na pewno chcesz kontunuować swoje cierpienie?")
-    if StartInput == "wczytaj":
-        print("Jak zrobisz zapisywanie to pogadamy!")
-    if StartInput == "opcje":
-        print("Masz dwie opcje: gułag albo śmierć!")
-    if StartInput == "wyjdź":
-        break
-    print()
-    
+###########################################################################
+###########################################################################
+###########################################################################
+###########################################################################
 
-Lokacja = 1
-DaneWszystkichQuestów=Questy()
-while Lokacja != 0 and start == 1: #lokacja 0 to GAME OVER
-    LocDescCheck(Lokacja,DaneWszystkichQuestów)
-    LocMoveset=LocMovesetCheck(Lokacja)
-    if LocMoveset[4] != 0 or LocMoveset[5] != 0:
-        if player.HP <= 0:
-            Lokacja = 0
-        if ActionInput not in MovementAction:
-            ActionInput = input().lower()
-    if LocMoveset[5] == 0 and LocMoveset[4] == 0:
-        ActionInput = input().lower()
+def TekstJeden():
+    TamNiePójdziesz = 'Brak możliwości ruchu.   '
+    for i in TamNiePójdziesz:
+        print (i, end='')
+        sleep(0.01)
 
-    (ActionInput,Lokacja,LocMoveset)=ActionCheck(ActionInput,Lokacja,LocMoveset)
-    
-    
-    if ActionInput == 'questy':
-        if DaneWszystkichQuestów[1][0] == 1:
-            print()
-            print('Nazwa: {}'.format(DaneWszystkichQuestów[1][1]))
-            print('Opis: {}'.format(DaneWszystkichQuestów[1][2]))
-            print('Zleceniodawca: {}'.format(DaneWszystkichQuestów[1][3]))
-        print()
-        if DaneWszystkichQuestów[1][0] == 0 or DaneWszystkichQuestów[1][0] == 3:
-            print('Nie masz żadnych zadań!')
-            print()
+def Lokacja1():
+    DescLok1 = 'To jest Lokacja nr. 1 gry Zagajnik.'
+    for i in DescLok1:
+        print (i, end='')
+        sleep(0.01)
+        
+def Lokacja2():
+    DescLok2 = 'To jest Lokacja nr. 2 gry Zagajnik.'
+    for i in DescLok2:
+        print (i, end='')
+        sleep(0.01)
+
+YW = ['W','w']
+YS = ['S','s']
+XA = ['A','a']
+XD = ['D','d']
+
+
+while True:
+    ActionInput = str(input())
+    items()
+    itemlist = items()
+    inventory(ekwipunek, ActionInput, itemlist)
+    if InformacjeLokacji[0][0] == 1 and ActionInput in YW:
+        InformacjeLokacji[1][1] = InformacjeLokacji[1][1]+1
+    if InformacjeLokacji[0][0] == 0 and ActionInput in YW:
+        TekstJeden()
+        
+    if InformacjeLokacji[0][1] == 1 and ActionInput in YS:
+        InformacjeLokacji[1][1] = InformacjeLokacji[1][1]-1
+    if InformacjeLokacji[0][1] == 0 and ActionInput in YS:
+        TekstJeden()
+
+    if InformacjeLokacji[0][2] == 1 and ActionInput in XA:
+        InformacjeLokacji[1][0] = InformacjeLokacji[1][0]+1
+    if InformacjeLokacji[0][2] == 0 and ActionInput in XA:
+        TekstJeden()
+        
+    if InformacjeLokacji[0][3] == 1 and ActionInput in XD:
+        InformacjeLokacji[1][0] = InformacjeLokacji[1][0]-1
+    if InformacjeLokacji[0][3] == 0 and ActionInput in XD:
+        TekstJeden()
+
+    if InformacjeLokacji[1][0] == 0 and InformacjeLokacji[1][1] == 0:
+        InformacjeLokacji[0][0] = 1
+        InformacjeLokacji[0][1] = 0
+        InformacjeLokacji[0][2] = 0
+        InformacjeLokacji[0][3] = 0
+        Lokacja1()
+    if InformacjeLokacji[1][0] == 0 and InformacjeLokacji[1][1] == 1:
+        InformacjeLokacji[0][0] = 0
+        InformacjeLokacji[0][1] = 1
+        InformacjeLokacji[0][2] = 0
+        InformacjeLokacji[0][3] = 0
+        Lokacja2()
+
+
+
+                      
             
-            
-            
-       
+
         
             
         
