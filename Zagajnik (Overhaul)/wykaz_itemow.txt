@@ -1,0 +1,51 @@
+zniszczony szyszak   {'name': 'Zniszczony szyszak', 'type': 'helmet', 'ochrona': 1, 'dodawana_si³a': 1, 'odejmowana_zrêcznoœæ': -1, 'dodawana_wytrzyma³oœæ': 2, 'dodawana_inteligencja': 0, 'dodawane_szczêœcie': 0}
+
+
+pikelhauba   {'name': 'Pikelhauba', 'type': 'helmet', 'ochrona': 2, 'dodawana_si³a': 2, 'odejmowana_zrêcznoœæ': -2, 'dodawana_wytrzyma³oœæ': 3, 'dodawana_inteligencja': 0, 'dodawane_szczêœcie': 0}
+
+
+zniszczona przeszywanica   {'name': 'Zniszczona przeszywanica', 'type': 'chestplate', 'ochrona': 4, 'dodawana_si³a': 5, 'odejmowana_zrêcznoœæ': -3, 'dodawana_wytrzyma³oœæ': 2, 'dodawana_inteligencja': 0, 'dodawane_szczêœcie': 0}
+
+
+zbroja p³ytowa   {'name': 'Zbroja p³ytowa', 'type': 'chestplate', 'ochrona': 8, 'dodawana_si³a': 9, 'odejmowana_zrêcznoœæ': -10, 'dodawana_wytrzyma³oœæ': 9, 'dodawana_inteligencja': 0, 'dodawane_szczêœcie': 0}
+
+
+skórzane spodnie   {'name': 'Skórzane spodnie', 'type': 'legs', 'ochrona': 3, 'dodawana_si³a': 2, 'odejmowana_zrêcznoœæ': -2, 'dodawana_wytrzyma³oœæ': 3, 'dodawana_inteligencja': 0, 'dodawane_szczêœcie': 0}
+
+
+nagolenniki   {'name': 'Nagolenniki', 'type': 'legs', 'ochrona': 4, 'dodawana_si³a': 3, 'odejmowana_zrêcznoœæ': -5, 'dodawana_wytrzyma³oœæ': 5, 'dodawana_inteligencja': 0, 'dodawane_szczêœcie': 0}
+
+
+skórzane rêkawice   {'name': 'Skórzane rêkawice', 'type': 'gloves', 'ochrona': 1, 'dodawana_si³a': 1, 'odejmowana_zrêcznoœæ': 4, 'dodawana_wytrzyma³oœæ': 2, 'dodawana_inteligencja': 0, 'dodawane_szczêœcie': 0}
+
+
+brak broni   {'name': 'Piêœci', 'type': 'weapon'}
+
+
+puste   {'name': 'puste', 'type': 'any', 'ochrona': 0, 'dodawana_si³a': 0, 'odejmowana_zrêcznoœæ': 0, 'dodawana_wytrzyma³oœæ': 0, 'dodawana_inteligencja': 0, 'dodawane_szczêœcie': 0, 'dodawane_max_HP': 0, 'dodawane_max_MP': 0}
+
+
+jab³ko   {'name': 'Jab³ko', 'type': 'food', 'dodawane_HP': 2, 'dodawane_MP': 1}
+
+
+eliksir many   {'name': 'Eliksir many', 'type': 'elixir', 'dodawane_HP': 0, 'dodawane_MP': 2}
+
+
+potê¿ny eliksir many   {'name': 'Potê¿ny eliksir many', 'type': 'elixir', 'dodawane_HP': 0, 'dodawane_MP': 5}
+
+
+eliksir ¿ycia   {'name': 'Eliksir ¿ycia', 'type': 'elixir', 'dodawane_HP': 4, 'dodawane_MP': 0}
+
+
+potê¿ny eliksir ¿ycia   {'name': 'Potê¿ny eliksir ¿ycia', 'type': 'elixir', 'dodawane_HP': 8, 'dodawane_MP': 0}
+
+
+brak_amuletu   {'name': 'puste', 'type': 'amulet', 'dodawana_si³a': 0, 'dodawana_zrêcznoœæ': 0, 'dodawana_wytrzyma³oœæ': 0, 'dodawana_inteligencja': 0, 'dodawane_szczêœcie': 0}
+
+
+naszyjnik z koœci   {'name': 'Naszyjnik z koœci', 'type': 'amulet', 'dodawana_si³a': 1, 'dodawana_zrêcznoœæ': 0, 'dodawana_wytrzyma³oœæ': 3, 'dodawana_inteligencja': 1, 'dodawane_szczêœcie': 1}
+
+
+królicza ³apka   {'name': 'Królicza ³apka', 'type': 'amulet', 'dodawana_si³a': 0, 'dodawana_zrêcznoœæ': 2, 'dodawana_wytrzyma³oœæ': 0, 'dodawana_inteligencja': 5, 'dodawane_szczêœcie': 6}
+
+
