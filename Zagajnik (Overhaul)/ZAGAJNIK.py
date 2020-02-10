@@ -5,7 +5,9 @@ from time import sleep
 # WSZYSTKIE ITEMY BĘDĄ OPISANE W FORMIE SłOWNIKÓW : ITEM = {"name": nazwa_przedmiotu, "type": typ_przedmiotu, "doIhave": True/False (kolejne statystyki)}
 from data.itemdefs import items
 from data.inventory import inventory
-
+from data.skrypt_wykazu_itemow import wykaz_itemow
+wykaz_itemow()
+itemlist = items()
 #####STATYSTYKI GRACZA#####
 class PlayerStats:
     def __init__(self, name, HP, MP, MaxHP, MaxMP, XP, level, str, dex, int, end, luck, basedamage, statpoints, spentstatpoints, pclass, subclass, combatstate, pointsspentstr, pointsspentdex, pointsspentint, pointsspentend, pointsspentluck, armorhead, armortorso, armorarms, armorlegs, eqaddedstr, eqaddeddex, eqaddedint, eqaddedend, eqaddedluck, basestr, basedex, baseint, baseend, baseluck):
@@ -56,8 +58,8 @@ class PlayerStats:
             if qwe == "1":
                 self.pclass = 1
                 self.subclass = 1
-                self.HP = 20 #maxhp się zwiększa wraz z siłą i wytrzymałością, podobnie jak mana; 4 (str) * 1 + 3 (end) * 2 = dodane maxhp
-                self.MaxHP = 10 #
+                self.HP = 20  #maxhp się zwiększa wraz z siłą i wytrzymałością, podobnie jak mana; 4 (str) * 1 + 3 (end) * 2 = dodane maxhp
+                self.MaxHP = 10  #
                 self.MP = 5
                 self.MaxMP = 0
                 self.basestr = 4
@@ -109,25 +111,24 @@ class PlayerStats:
         if self.HP > self.MaxHP:
             self.HP = self.MaxHP
         if self.MaxHP < 0:
-            print("Ta wiadomość nie powinna się pokazywać. Coś jest nie tak z twoim maksymalnym poziomem życia...")
             self.MaxHP = 1
-            print("Ustawiono maksymalne życie na: 1")
+            print("Życie poniżej zera; ustawiono na 0.")
         return self
     def calcmaxmp(self):
         self.MaxMP = 0+(1*self.dex)+(2*self.int)
         if self.MP > self.MaxMP:
             self.MP = self.MaxMP
+        if self.MP < 0:
+            self.MP = 0
         if self.MaxMP < 0:
-            print("Ta wiadomość nie powinna się pokazywać. Coś jest nie tak z twoim maksymalnym poziomem many...")
             self.MaxMP = 0
-            print("Ustawiono maksymalną manę na: 0")
+            print("Mana poniżej zera; ustawiono na 0.")
         return self
     def calcdamage(self):
         self.basedamage = 1+(1*self.dex)+(2*self.str)
         if self.basedamage < 0:
-            print("Ta wiadomość nie powinna się pokazywać. Coś jest nie tak z twoimi obrażeniami podstawowymi...")
             self.MaxMP = 1
-            print("Ustawiono podstawowe obrażenia na: 1")
+            print("Obrażenia poniżej zera; ustawiono na 0.")
         return self
     def calclevel(self):
         if self.XP < 0:
@@ -174,163 +175,29 @@ class PlayerStats:
 
 #####STATYSTYKI GRACZA#####
 #####SYSTEM QUESTÓW#####
-def Questy():
-        
-    DaneQuesta=[0,"","","","",0,0,0,0] #Slot 0- Aktywność questa Slot 1- Nazwa Slot 2- Opis Slot 3- Zleceniodawca Slot 4- Nagroda przedmiot Slot 5- ilość exp Slot 6- nagroda pieniądze 7- ID questa 8- status
-    DaneQuesta1=[0,"Miejscowy Bohater","Zostało mi powierzone bardzo trudne zadanie - odnaleźć łyżeczkę dżemu.","Staruszek z Crosset","",100,5,1,0]
-    DaneWszystkichQuestów=[]
-    DaneWszystkichQuestów.append(DaneQuesta)
-    DaneWszystkichQuestów.append(DaneQuesta1)
-    #print(DaneWszystkichQuestów)
-    return DaneWszystkichQuestów
-
-def SprawdzanieStatusu(DaneWszystkichQuestów, ActionInput, SzukanieMiejscaNaPrzedmiot, KoniecQuesta):
-    while DaneWszystkichQuestów[1][0] == 1 and DaneWszystkichQuestów[1][7] >0:
-        if DaneWszystkichQuestów[1][8] == 0 and DaneWszystkichQuestów[1][7] == 1 and ActionInput == "quests":
-            print('''Miejscowy Bohater - Odnajdź łyżeczkę dżemu.
-            Nagroda - 5 Koron, 100exp
-            Zleceniodawca - Staruszek z Crosset''')
-        if DaneWszystkichQuestów[1][8] == 1 and DaneWszystkichQuestów[1][7] == 1 and ActionInput == "quests":
-            print('''Miejscowy Bohater - Wykonane.
-            Nagroda - 5 Koron, 100exp
-            Zleceniodawca - Staruszek z Crosset''')
-        if DaneWszystkichQuestów[1][8] == 1 and DaneWszystkichQuestów[1][7] == 1:
-            print('''Zadanie "Miejscowy Bohater" zostało ukończone.
-            Wróć do zleceniodawcy po nagrodę.''')
-            if DaneWszystkichQuestów[1][8] == 1 and Lokacja == 12:
-                print('''Dziękuje Ci! Kto jest małą łyżeczką, no kto!
-            Żebym nie wyszedł na dusigrosza o to mała nagroda.''')
-                print('Otrzymano: 5 Koron')
-                if DaneWszystkichQuestów[1][4] == 0:
-                    KoniecQuesta(player, Questy)
-                    DaneQuesta1[0] == 3
-                if DaneWszystkichQuestów[1][4] != 0:
-                    SzukanieMiejscaNaPrzedmiot(item, KoniecQuesta)
-                    KoniecQuesta(player, Questy)
-                    DaneWszystkichQuestów[1][0] == 3
-    
-def PrintQuest(Questy):
-    print()
-    print(DaneQuesta[1])
-    print(DaneQuesta[2])
-    print(DaneQuesta[3])
-    print(DaneQuesta[4])
-    print(DaneQuesta[5])
-    print(DaneQuesta[6])
-    print()
-
-def KoniecQuesta(player, Questy):
-    player.EXP += DaneQuesta[5]
-    item.gold += DaneQuesta[6]
-    OtrzymanyPRZEDMIOT = DaneQuesta[4]
-    return player.EXP
-
-def SzukanieMiejscaNaPrzedmiot(KoniecQuesta):
-    SprawdzenieMiejsca = []
-    
-    if item.inventoryslot1[0] == 0:
-        item.inventoryslot1 == OtrzymanyPRZEDMIOT
-    if item.inventoryslot1[0] == 1:
-        if SprawdzenieMiejsca in locals():
-            del SprawdzenieMiejsca
-            SprawdzenieMiejsca=[]
-        SprawdzenieMiejsca.append(1)
-        return SprawdzenieMiejsca
-        
-    if item.inventoryslot2[0] == 0:
-        item.inventoryslot2 == OtrzymanyPRZEDMIOT      
-    if SprawdzenieMiejsca[0] == 1:
-        if item.inventoryslot2[0] == 1:
-            if SprawdzenieMiejsca in locals():
-                del SprawdzenieMiejsca
-                SprawdzenieMiejsca=[]
-            SprawdzenieMiejsca.append(2)
-            return SprawdzenieMiejsca
-            
-    if item.inventoryslot3[0] == 0:
-        item.inventoryslot3 == OtrzymanyPRZEDMIOT            
-    if SprawdzenieMiejsca[0] == 2:
-        if item.inventoryslot3[0] == 1:
-            if SprawdzenieMiejsca in locals():
-                del SprawdzenieMiejsca
-                SprawdzenieMiejsca=[]
-            SprawdzenieMiejsca.append(3)
-            return SprawdzenieMiejsca
-            
-    if item.inventoryslot4[0] == 0:
-        item.inventoryslot4 == OtrzymanyPRZEDMIOT
-    if SprawdzenieMiejsca[0] == 3:        
-        if item.inventoryslot4[0] == 1:
-            if SprawdzenieMiejsca in locals():
-                del SprawdzenieMiejsca
-                SprawdzenieMiejsca=[]
-            SprawdzenieMiejsca.append(4)
-            return SprawdzenieMiejsca
-    
-    if item.inventoryslot5[0] == 0:
-        item.inventoryslot5 == OtrzymanyPRZEDMIOT
-    if item.inventoryslot5[0] == 1:
-        if SprawdzenieMiejsca in locals():
-            del SprawdzenieMiejsca
-            SprawdzenieMiejsca=[]
-        SprawdzenieMiejsca.append(5)
-        return SprawdzenieMiejsca
-        
-    if item.inventoryslot6[0] == 0:
-        item.inventoryslot6 == OtrzymanyPRZEDMIOT
-    if item.inventoryslot6[0] == 1:
-        if SprawdzenieMiejsca in locals():
-            del SprawdzenieMiejsca
-            SprawdzenieMiejsca=[]
-        SprawdzenieMiejsca.append(6)
-        return SprawdzenieMiejsca
-        
-    if item.inventoryslot7[0] == 0:
-        item.inventoryslot7 == OtrzymanyPRZEDMIOT
-    if item.inventoryslot7[0] == 1:
-        if SprawdzenieMiejsca in locals():
-            del SprawdzenieMiejsca
-            SprawdzenieMiejsca=[]
-        SprawdzenieMiejsca.append(7)
-        return SprawdzenieMiejsca
-    
-    if item.inventoryslot8[0] == 0:
-        item.inventoryslot8 == OtrzymanyPRZEDMIOT
-    if item.inventoryslot8[0] == 1:
-        if SprawdzenieMiejsca in locals():
-            del SprawdzenieMiejsca
-            SprawdzenieMiejsca=[]
-        SprawdzenieMiejsca.append(8)
-        return SprawdzenieMiejsca
-    
-    if item.inventoryslot10[0] == 0:
-        item.inventoryslot10 == OtrzymanyPRZEDMIOT
-    if item.inventoryslot10[0] == 1:
-        print('Brak miejsca w ekwipunku!')
-        #PrzedmiotNaGape1 = 1
-        #while PrzedmiotNaGape1 == 1 and Lokacja == LokacjaZleceniodawcy:
-        #   SzukanieMiejscaNaPrzedmiot(item, KoniecQuesta)
 #####SYSTEM QUESTÓW#####
-
 #####GŁÓWNY MODUŁ#####
 akcja=['Zjedz','Użyj','Opis','Atakuj','Zagadaj']
 OtherAction=['zjedz','użyj','opis','atakuj','zagadaj', 'ubierz', 'dobądź', 'zdejmij', 'schowaj', 'ekwipunek', 'weź']
 ItemAction=['zjedz','użyj','opis','ubierz','dobądź','zdejmij','schowaj','ekwipunek']
 DebugAction=['debug']
-InformacjeLokacji = [[1,0,0,0],[0,0]]
+InformacjeLokacji = [[1,0,0,0],[0,0],[]]
 def ActInput(ActionInput):
     ActionInput = input().lower()
     return ActionInput
-helmet = "puste"
-chestplate = "puste"
-legs = "puste"
-gloves = "puste"
-item1 = "puste"
-item2 = "puste"
-item3 = "puste"
-item4 = "puste"
-item5 = "puste"
-ekwipunek = [helmet, chestplate, legs, gloves, item1, item2, item3, item4, item5]
+itemlist = items()
+helmet = itemlist["puste"]
+chestplate = itemlist["puste"]
+legs = itemlist["puste"]
+gloves = itemlist["puste"]
+item1 = itemlist["eliksir many"]
+item2 = itemlist["królicza łapka"]
+item3 = itemlist["jabłko"]
+item4 = itemlist["nagolenniki"]
+item5 = itemlist["zniszczona przeszywanica"]
+amulet = itemlist["brak_amuletu"]
+weapon = itemlist["brak broni"]
+ekwipunek = [helmet, chestplate, legs, gloves, item1, item2, item3, item4, item5, amulet]
 
     
 
@@ -351,12 +218,6 @@ def clear():
 
 ActionInput = ""
 
-
-###########################################################################
-###########################################################################
-###########################################################################
-###########################################################################
-
 def TekstJeden():
     TamNiePójdziesz = 'Brak możliwości ruchu.   '
     for i in TamNiePójdziesz:
@@ -374,7 +235,7 @@ def Lokacja2():
     for i in DescLok2:
         print (i, end='')
         sleep(0.01)
-
+    
 YW = ['W','w']
 YS = ['S','s']
 XA = ['A','a']
@@ -383,7 +244,20 @@ XD = ['D','d']
 player = PlayerStats("",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
 player.name = str(input("Powiedz jak się nazywasz podróżniku.")) #możecie to dać pod komentarzem jak przeszkadza
 player.classchoice() #to też możecie dać pod komentarzem
+
 while True:
+
+    #if InformacjeLokacji[2] != []:
+        #print('Na ziemi leży:' CoNaZiemi)
+
+    player.eqaddedstr = int(ekwipunek[0]["dodawana_siła"]+ekwipunek[1]["dodawana_siła"]+ekwipunek[2]["dodawana_siła"]+ekwipunek[3]["dodawana_siła"]+ekwipunek[9]["dodawana_siła"])
+    player.eqaddeddex = int(ekwipunek[0]["odejmowana_zręczność"]+ekwipunek[1]["odejmowana_zręczność"]+ekwipunek[2]["odejmowana_zręczność"]+ekwipunek[3]["odejmowana_zręczność"]+ekwipunek[9]["dodawana_zręczność"])
+    player.eqaddedint = int(ekwipunek[0]["dodawana_inteligencja"]+ekwipunek[1]["dodawana_inteligencja"]+ekwipunek[2]["dodawana_inteligencja"]+ekwipunek[3]["dodawana_inteligencja"]+ekwipunek[9]["dodawana_inteligencja"])
+    player.eqaddedend = int(ekwipunek[0]["dodawana_wytrzymałość"]+ekwipunek[1]["dodawana_wytrzymałość"]+ekwipunek[2]["dodawana_wytrzymałość"]+ekwipunek[3]["dodawana_wytrzymałość"]+ekwipunek[9]["dodawana_wytrzymałość"])
+    player.eqaddedluck = int(ekwipunek[0]["dodawane_szczęście"]+ekwipunek[1]["dodawane_szczęście"]+ekwipunek[2]["dodawane_szczęście"]+ekwipunek[3]["dodawane_szczęście"]+ekwipunek[9]["dodawane_szczęście"])
+    player.armortorso = (int(ekwipunek[1]["ochrona"]) / 2) + int(ekwipunek[3]["ochrona"])
+    player.armorhead = int(ekwipunek[0]["ochrona"])
+    player.armorlegs = int(ekwipunek[2]["ochrona"])
     player.calcstats()
     player.calcmaxhp()
     player.calcmaxmp()
@@ -422,11 +296,10 @@ while True:
             player.spentstatpoints += 1
             player.calclevel()
         if y not in ("str","dex","int","end","luck"):
-            print("zła odpowiedź")                         #kod co do statystyk gracza tu się kończy
-            
+            print("zła odpowiedź")                         #kod co do statystyk gracza tu się kończy            
     items()
     itemlist = items()
-    inventory(ekwipunek, ActionInput, itemlist)
+    inventory(ekwipunek, ActionInput, itemlist, player)
     if InformacjeLokacji[0][0] == 1 and ActionInput in YW:
         InformacjeLokacji[1][1] = InformacjeLokacji[1][1]+1
     if InformacjeLokacji[0][0] == 0 and ActionInput in YW:
