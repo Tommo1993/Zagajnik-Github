@@ -117,23 +117,38 @@ class PlayerStats:
         return self
 
     def prevhpscaling(self):
-        self.prevmaxhp = self.HP/self.MaxHP*100
-        self.prevmaxmp = self.MP/self.MaxMP*100
+        try:
+            self.prevmaxhp = self.HP/self.MaxHP*100
+        except ZeroDivisionError:
+            self.prevmaxhp = 1
+        try:
+            self.prevmaxmp = self.MP/self.MaxMP*100
+        except ZeroDivisionError:
+            self.prevmaxmp = 0
         return self
         
     def hpmpscaling(self):
-        if self.HP/self.MaxHP*100 != self.prevmaxhp:
-            self.HP = self.MaxHP*self.prevmaxhp//100
-            self.HP = int(self.HP)
-        if self.MP/self.MaxMP*100 != self.prevmaxmp:
-            self.MP = self.MaxMP*self.prevmaxmp//100
-            self.MP= int(self.MP)
+        try:
+            if self.HP/self.MaxHP*100 != self.prevmaxhp:
+                self.HP = self.MaxHP*self.prevmaxhp//100
+                self.HP = int(self.HP)
+        except ZeroDivisionError:
+            self.HP = 1
+            self.MaxHP = 1
+        try:
+            if self.MP/self.MaxMP*100 != self.prevmaxmp:
+                self.MP = self.MaxMP*self.prevmaxmp//100
+                self.MP = int(self.MP)
+        except ZeroDivisionError:
+            self.MP = 0
+            self.MaxMP = 0
+            self.prevmaxmp = 0
         return self
         
     def calcdamage(self):
         self.basedamage = 1+(1*self.dex)+(2*self.str)
         if self.basedamage < 0:
-            self.MaxMP = 1
+            self.basedamage = 1
             print("Obrażenia poniżej zera; ustawiono na 0.")
         return self
     def calclevel(self):

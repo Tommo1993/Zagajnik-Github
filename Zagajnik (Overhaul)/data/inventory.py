@@ -9,19 +9,22 @@
 def inventory(ekwipunek, ActionInput, itemlist, player):
     lista_do_wyswietlenia = (
     "Hełm:   ", "Napierśnik:   ", "Nogawice:   ", "Rękawice:   ", "Slot 1:   ", "Slot 2:   ", "Slot 3:   ",
-    "Slot 4:   ", "Slot 5:   ", "Amulet:   ")
+    "Slot 4:   ", "Slot 5:   ", "Amulet:   ", "Korony:   ")
     if ActionInput.lower() == "ekwipunek":
-        for inventory_position in range(10):
+        for inventory_position in range(0, 11):
             if ekwipunek[inventory_position] == "puste":
+                print(lista_do_wyswietlenia[inventory_position], ekwipunek[inventory_position])
+            elif type(ekwipunek[inventory_position]) == int:
                 print(lista_do_wyswietlenia[inventory_position], ekwipunek[inventory_position])
             else:
                 print(lista_do_wyswietlenia[inventory_position],
-                      ekwipunek[inventory_position]["name"])  # tu będą wpisywane statystyki przedmiotu#
+                      ekwipunek[inventory_position]["name"]) # tu będą wpisywane statystyki przedmiotu#
     if ActionInput.lower()[0:6] == "ubierz":
         key = ActionInput.lower()[
               7:len(ActionInput.lower())]  #### KLUCZ DO ODNALEZIENIA ITEMU NA LIŚCIE ITEMÓW itemlist
         if key not in itemlist.keys():
             print("Wybrany przedmiot nie istnieje!")
+            return ekwipunek
         if  key in itemlist.keys() and itemlist[key]["type"] not in ["helmet", "chestplate", "legs", "gloves", "amulet"]:
             print("Nie możesz założyć", key.title(), "!")
             return ekwipunek
