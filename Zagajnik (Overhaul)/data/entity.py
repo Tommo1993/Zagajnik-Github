@@ -8,4 +8,6 @@ class EntityStats:
         self.damage = damage
         self.armor = armor
 
+
+
         

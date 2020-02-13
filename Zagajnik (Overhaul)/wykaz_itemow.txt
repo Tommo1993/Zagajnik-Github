@@ -19,7 +19,7 @@ nagolenniki   {'name': 'Nagolenniki', 'type': 'legs', 'ochrona': 4, 'dodawana_si
 skórzane rêkawice   {'name': 'Skórzane rêkawice', 'type': 'gloves', 'ochrona': 1, 'dodawana_si³a': 1, 'odejmowana_zrêcznoœæ': -4, 'dodawana_wytrzyma³oœæ': 2, 'dodawana_inteligencja': 0, 'dodawane_szczêœcie': 0, 'cena': 3}
 
 
-brak broni   {'name': 'Piêœci', 'type': 'weapon'}
+brak broni   {'name': 'Piêœci', 'type': 'weapon', 'dodawana_si³a': 1, 'dodawana_inteligencja': 0, 'dodawane_szczêœcie': 0}
 
 
 puste   {'name': 'puste', 'type': 'any', 'ochrona': 0, 'dodawana_si³a': 0, 'odejmowana_zrêcznoœæ': 0, 'dodawana_wytrzyma³oœæ': 0, 'dodawana_inteligencja': 0, 'dodawane_szczêœcie': 0, 'dodawane_max_HP': 0, 'dodawane_max_MP': 0}
@@ -47,5 +47,20 @@ naszyjnik z koœci   {'name': 'Naszyjnik z koœci', 'type': 'amulet', 'dodawana_si
 
 
 królicza ³apka   {'name': 'Królicza ³apka', 'type': 'amulet', 'dodawana_si³a': 0, 'dodawana_zrêcznoœæ': 2, 'dodawana_wytrzyma³oœæ': 0, 'dodawana_inteligencja': 5, 'dodawane_szczêœcie': 6, 'cena': 30}
+
+
+miêso z wilka   {'name': 'Miêso z wilka', 'type': 'food', 'dodawane_HP': 3, 'dodawane_MP': 3, 'cena': 1}
+
+
+skóra wilka   {}
+
+
+buzdygan   {'name': 'Stary buzdygan', 'type': 'weapon', 'dodawana_si³a': 3, 'dodawana_inteligencja': 0, 'dodawana_szczêœcie': 0}
+
+
+zardzewia³y miecz   {'name': 'Zardzewia³y miecz', 'type': 'weapon', 'dodawana_si³a': 4, 'dodawana_inteligencja': 0, 'dodawane_szczêœcie': 0, 'cena': 3}
+
+
+zniszczona ró¿d¿ka   {'name': 'Zniszczona ró¿d¿ka', 'type': 'weapon', 'dodawana_si³a': 6, 'dodawana_inteligencja': 2, 'dodawane_szczêœcie': 4, 'cena': 5}
 
 

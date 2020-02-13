@@ -124,6 +124,8 @@ def inventory(ekwipunek, ActionInput, itemlist, player):
             for item_position in range(4, 9):
                 if ekwipunek[item_position] == itemlist[key]:
                     ekwipunek[item_position] = "puste"
+                    if itemlist[key] == weapon:
+                        weapon = itemlist["brak broni"]
                     print("Wyrzucono", key.title())
                     return ekwipunek, itemlist
         else:
@@ -131,9 +133,10 @@ def inventory(ekwipunek, ActionInput, itemlist, player):
             return ekwipunek
     if ActionInput.lower()[0:6] == "dobądź":
         key = ActionInput.lower()[7:len(ActionInput.lower())]
-        if  key in itemlist.keys() and itemlist[key] in ekwipunek[4:9] and itemlist[key]["type"] == "weapon":
-            weapon = itemlist[key]
-            return weapon
+        if key in itemlist.keys() and itemlist[key] in ekwipunek[4:9] and itemlist[key]["type"] == "weapon":
+            ekwipunek[11] = itemlist[key]
+            print("Dobyto", key.title())
+            return ekwipunek
         elif key in itemlist.keys() and itemlist[key]["type"] != "weapon":
             print("Nie możesz dobyć ", key.title(), "!")
             return ekwipunek
@@ -180,3 +183,4 @@ def inventory(ekwipunek, ActionInput, itemlist, player):
                     ekwipunek[elixir_position] = "puste"
                     print("Wypito", itemlist[key]["name"].title())
                     return ekwipunek
+

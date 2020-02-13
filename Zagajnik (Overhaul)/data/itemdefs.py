@@ -5,10 +5,14 @@ def items():
     # Puste definiuje brak zbroi i odnosi się jedynie do armora i amuletów:
     puste = {"name": "puste", "type": "any", "ochrona": 0, "dodawana_siła": 0, "odejmowana_zręczność": 0, "dodawana_wytrzymałość": 0, "dodawana_inteligencja": 0, "dodawane_szczęście": 0, "dodawane_max_HP": 0, "dodawane_max_MP": 0}
 
+
     # Uzbrojenie:
-    hands = {"name": "Pięści", "type": "weapon"}
-        #buzdygan
-        #miecz
+    hands = {"name": "Pięści", "type": "weapon", "dodawana_siła": 1, "dodawana_inteligencja": 0, "dodawane_szczęście": 0}
+    buzdygan = {"name": "Stary buzdygan", "type": "weapon", "dodawana_siła": 3, "dodawana_inteligencja": 0, "dodawana_szczęście": 0}
+    rusted_sword = {"name": "Zardzewiały miecz", "type": "weapon", "dodawana_siła": 4, "dodawana_inteligencja": 0, "dodawane_szczęście": 0, "cena": 3}
+    broken_wand = {"name": "Zniszczona różdżka", "type": "weapon", "dodawana_siła": 6, "dodawana_inteligencja": 2, "dodawane_szczęście": 4, "cena": 5}
+
+
 
     # Elementy armora:
     helmet1 = {"name": "Zniszczony szyszak", "type": "helmet", "ochrona": 1, "dodawana_siła": 1, "odejmowana_zręczność": -1, "dodawana_wytrzymałość": 2, "dodawana_inteligencja": 0, "dodawane_szczęście": 0, "cena": 5}
@@ -21,6 +25,7 @@ def items():
 
     # jadalne
     apple = {"name": "Jabłko", "type": "food", "dodawane_HP": 2, "dodawane_MP": 1, "cena": 2}
+    wolf_meat = {"name": "Mięso z wilka", "type": "food", "dodawane_HP": 3, "dodawane_MP": 3, "cena": 1}
 
     # eliksiry
     mana_elixir = {"name": "Eliksir many", "type": "elixir", "dodawane_HP": 0, "dodawane_MP": 2, "cena": 15}
@@ -32,10 +37,12 @@ def items():
     puste_amulet = {"name": "puste", "type": "amulet", "dodawana_siła": 0, "dodawana_zręczność": 0, "dodawana_wytrzymałość": 0, "dodawana_inteligencja": 0, "dodawane_szczęście": 0}
     amulet1 = {"name": "Naszyjnik z kości", "type": "amulet", "dodawana_siła": 1, "dodawana_zręczność": 0, "dodawana_wytrzymałość": 3, "dodawana_inteligencja": 1, "dodawane_szczęście": 1, "cena": 10}
     amulet2 = {"name": "Królicza łapka", "type": "amulet", "dodawana_siła": 0, "dodawana_zręczność": 2, "dodawana_wytrzymałość": 0, "dodawana_inteligencja": 5, "dodawane_szczęście": 6, "cena": 30}
+    wolf_skin = {} #roboczo, opis do dodania
 
     # lista wszystkich przedmiotów w grze, itemy wywołuje się za pomocą itemlist["nazwa_itemu"]:
     itemlist = {"zniszczony szyszak": helmet1, "pikelhauba": helmet2, "zniszczona przeszywanica": chestplate1, "zbroja płytowa": chestplate2,
             "skórzane spodnie": legs1, "nagolenniki": legs2, "skórzane rękawice": gloves1, "brak broni": hands, "puste": puste, "jabłko": apple,
                 "eliksir many": mana_elixir, "potężny eliksir many": big_mana_elixir, "eliksir życia": health_elixir, "potężny eliksir życia": big_health_elixir, "brak_amuletu": puste_amulet,
-                "naszyjnik z kości": amulet1, "królicza łapka": amulet2}
+                "naszyjnik z kości": amulet1, "królicza łapka": amulet2, "mięso z wilka": wolf_meat, "skóra wilka": wolf_skin, "buzdygan": buzdygan,
+                "zardzewiały miecz": rusted_sword, "zniszczona różdżka": broken_wand}
     return itemlist
