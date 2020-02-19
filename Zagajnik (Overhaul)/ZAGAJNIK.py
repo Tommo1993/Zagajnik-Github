@@ -7,7 +7,7 @@ from data.player import *
 from data.itemdefs import items
 from data.inventory import inventory
 from data.skrypt_wykazu_itemow import wykaz_itemow
-from data.entity import *
+from data.entity import EntityStats
 
 wykaz_itemow()
 itemlist = items()
@@ -15,6 +15,15 @@ itemlist = items()
 #####SYSTEM QUESTÓW#####
 #####GŁÓWNY MODUŁ#####
 
+def LosowanieEnemy(InformacjeLokacji):
+    print(InformacjeLokacji)
+    if InformacjeLokacji[2][0] == 1:
+
+        entity = entitylist[random.choice(["szkielet", "minotaur", "wilk"])]
+        fight = 1
+        return entity, fight
+
+    
 TekstyKowalCrosset = ['Tekst1','Tekst2','Tekst3']
 def ParametryVendora1():
     Asortyment = {"zniszczona przeszywanica": itemlist["zniszczona przeszywanica"]["cena"], "naszyjnik z kości": itemlist["naszyjnik z kości"]["cena"], "zardzewiały miecz": itemlist["zardzewiały miecz"]["cena"]}
@@ -90,14 +99,47 @@ def WystępowanieNPC(itemlist, ParametryVendora, InformacjeLokacji, ekwipunek, A
             else:
                 print('Nie ma tu nikogo takiego.')
 fight = 0
+def EnemyAttack(player,entity):
+    enemyhitdirection = random.randint(1,4)
+    if enemyhitdirection == 1:
+        entitydmgvalue = entity.damage*2+random.randint(-5,5)-player.armorhead
+        if entitydmgvalue > 0:
+            print("Przeciwnik trafił cię w głowę i zadał {} obrażeń!".format(entitydmgvalue))
+            player.HP -= entitydmgvalue
+        if entitydmgvalue <= 0:
+            print("Przeciwnik trafił cię w głowę, ale nie zadał żadnych obrażeń.")
+    elif enemyhitdirection == 2:
+        entitydmgvalue = entity.damage+random.randint(-5,5)-player.armortorso
+        if entitydmgvalue > 0:
+            print("Przeciwnik trafił cię w tors i zadał {} obrażeń!".format(entitydmgvalue))
+            player.HP -= entitydmgvalue
+        if entitydmgvalue <= 0:
+            print("Przeciwnik trafił cię w tors, ale nie zadał żadnych obrażeń.")
+    elif enemyhitdirection == 3:
+        entitydmgvalue = entity.damage+random.randint(-5,5)-player.armorarms
+        if entitydmgvalue > 0:
+            print("Przeciwnik trafił cię w rękę i zadał {} obrażeń!".format(entitydmgvalue))
+            player.HP -= entitydmgvalue
+        if entitydmgvalue <= 0:
+            print("Przeciwnik trafił cię w rękę, ale nie zadał żadnych obrażeń.")
+    elif enemyhitdirection == 4:
+        entitydmgvalue = entity.damage+random.randint(-5,5)-player.armorlegs
+        if entitydmgvalue > 0:
+            print("Przeciwnik trafił cię w nogę i zadał {} obrażeń!".format(entitydmgvalue))
+            player.HP -= entitydmgvalue
+        if entitydmgvalue <= 0:
+            print("Przeciwnik trafił cię w nogę, ale nie zadał żadnych obrażeń.")
+    return player, entity
+    
 def SystemWalki(player,entity,fight):
     while fight == 1:
         print("Na twojej drodze stoi {}, twój wróg posiada {} HP.".format(entity.entityname,entity.hp))
         print("Wybierz co chciałbyś zrobić.")
         print("Zaatakuj (Z), Atak Specjalny (X), Użyj Przedmiotów (C), Uciekaj (V)")
-        PlayerChoice = input("[{} HP] [{} MP] [{} XP] [{} LVL] {}".format(player.HP,player.MP,player.XP,player.level,"\n")).lower()
+        PlayerChoice = input("[{}/{} HP] [{}/{} MP] [{} XP] [{} LVL] {}".format(player.HP,player.MaxHP,player.MP,player.MaxMP,player.XP,player.level,"\n")).lower()
         if PlayerChoice == "z" or PlayerChoice == "zaatakuj":
             playerdmgvalue = player.basedamage+random.randint(-5,5)-entity.armor
+            playerdmgvalue = int(playerdmgvalue)
             if playerdmgvalue <= 0:
                 print("Trafiłeś wroga, ale nie zadałeś mu żadnych obrażeń.")
             else:
@@ -106,40 +148,57 @@ def SystemWalki(player,entity,fight):
                 if entity.hp <= 0:
                     result = 1
                     fight = 0
-            enemyhitdirection = random.randint(1,4)
-            if enemyhitdirection == 1:
-                entitydmgvalue = entity.damage*2+random.randint(-5,5)-player.armorhead
-                if entitydmgvalue > 0:
-                    print("Przeciwnik trafił cię w głowę i zadał {} obrażeń!".format(entitydmgvalue))
-                    player.HP -= entitydmgvalue
-                if entitydmgvalue <= 0:
-                    print("Przeciwnik trafił cię w głowę, ale nie zadał żadnych obrażeń.")
-            elif enemyhitdirection == 2:
-                entitydmgvalue = entity.damage+random.randint(-5,5)-player.armortorso
-                if entitydmgvalue > 0:
-                    print("Przeciwnik trafił cię w tors i zadał {} obrażeń!".format(entitydmgvalue))
-                    player.HP -= entitydmgvalue
-                if entitydmgvalue <= 0:
-                    print("Przeciwnik trafił cię w tors, ale nie zadał żadnych obrażeń.")
-            elif enemyhitdirection == 3:
-                entitydmgvalue = entity.damage+random.randint(-5,5)-player.armorarms
-                if entitydmgvalue > 0:
-                    print("Przeciwnik trafił cię w rękę i zadał {} obrażeń!".format(entitydmgvalue))
-                    player.HP -= entitydmgvalue
-                if entitydmgvalue <= 0:
-                    print("Przeciwnik trafił cię w rękę, ale nie zadał żadnych obrażeń.")
-            elif enemyhitdirection == 4:
-                entitydmgvalue = entity.damage+random.randint(-5,5)-player.armorlegs
-                if entitydmgvalue > 0:
-                    print("Przeciwnik trafił cię w nogę i zadał {} obrażeń!".format(entitydmgvalue))
-                    player.HP -= entitydmgvalue
-                if entitydmgvalue <= 0:
-                    print("Przeciwnik trafił cię w nogę, ale nie zadał żadnych obrażeń.")
+            if entity.hp > 0:
+                EnemyAttack(player,entity)
             if player.HP <= 0:
                 result = 2
                 break
         elif PlayerChoice == "x" or PlayerChoice == "atak specjalny":
-            print("Jeszcze tego nie ma.")
+            if player.pclass == 1 and player.subclass == 1:
+                print("Atak specjalny:")
+                print("Silne uderzenie [1 MP] (Z)")
+                print("Bitewny szał [5 MP] (X)")
+                PlayerChoice = input("[{}/{} HP] [{}/{} MP] [{} XP] [{} LVL] {}".format(player.HP,player.MaxHP,player.MP,player.MaxMP,player.XP,player.level,"\n")).lower()
+                if PlayerChoice == "z" and player.MP > 0:
+                    player.MP -= 1
+                    playerdmgvalue = player.basedamage*2-4+random.randint(-8,8)-entity.armor
+                    playerdmgvalue = int(playerdmgvalue)
+                    if playerdmgvalue <= 0:
+                        print("Trafiłeś wroga, ale nie zadałeś mu żadnych obrażeń.")
+                    else:
+                        print("Trafiłeś wroga i zadałeś mu {} obrażeń.".format(playerdmgvalue))
+                        entity.hp -= playerdmgvalue
+                        if entity.hp <= 0:
+                            result = 1
+                            fight = 0
+                    if entity.hp > 0:
+                        EnemyAttack(player,entity)
+                elif PlayerChoice == "z" and player.MP <= 0:
+                    print("Nie masz wystarczająco many na ten atak.")
+                elif PlayerChoice == "x" and player.MP > 0:
+                    player.MP -= 5
+                    playerdmgvalue = player.basedamage*2+random.randint(-10,10)-entity.armor*0.5
+                    playerdmgvalue = int(playerdmgvalue)
+                    if playerdmgvalue <= 0:
+                        print("Trafiłeś wroga, ale nie zadałeś mu żadnych obrażeń.")
+                    else:
+                        print("Trafiłeś wroga i zadałeś mu {} obrażeń.".format(playerdmgvalue))
+                        recoveredhp = int(playerdmgvalue/4)
+                        print("Twój atak odnowił ci {} HP.".format(recoveredhp))
+                        player.HP += recoveredhp
+                        entity.hp -= playerdmgvalue
+                        if entity.hp <= 0:
+                            result = 1
+                            fight = 0
+                    print("Twój wróg nie zdążył zareagować na twoją dziką szarżę i nie zaatakował.")
+                elif PlayerChoice == "x" and player.MP <= 0:
+                    print("Nie masz wystarczająco many na ten atak.")
+                else:
+                    print("Nie posiadasz takiej możliwości ataku.")
+            elif player.pclass == 2 and player.subclass == 1:
+                print("Jeszcze nie zrobione.")
+            elif player.pclass == 3 and player.subclass == 1:
+                print("Jeszcze nie zrobione.")
         elif PlayerChoice == "c" or PlayerChoice == "użyj przedmiotów":
             print("Nie ma takiej opcji.")
         elif PlayerChoice == "v" or PlayerChoice == "uciekaj": 
@@ -156,7 +215,7 @@ def SystemWalki(player,entity,fight):
             fight = 0
             result = 2
             break
-        elif PlayerChoice not in ('z','x','c','v','zaatakuj','atak specjalny','użyj przedmiotów','uciekaj','gtfo'):
+        elif PlayerChoice.lower() not in ('z','x','c','v','zaatakuj','atak specjalny','użyj przedmiotów','uciekaj','gtfo',):
             print("Coś źle wpisałeś.")
     if result == 2:
         print("Nie udało ci się pokonać wroga.")
@@ -166,112 +225,63 @@ def SystemWalki(player,entity,fight):
         print("Otrzymałeś {} XP!".format(entity.xpreward))
         player.XP += entity.xpreward
         return player,entity,fight
+def szkielet():
+    entity = EntityStats("Szkielet", 10,10,10,[],5,2)
+    return entity
+def troll():
+    entity = EntityStats("Troll", 10, 5, 6, [], 2, 5)
+    return entity
+def potezny_troll():
+    entity = EntityStats("Potężny troll", 15,6,8,[],3,10)
+    return entity
+def gryf(): #### NAZWA DO ZMIANY, ZALEŻY OD PISARZY
+    entity = EntityStats("Gryf", 20,5,6,[],9,0)
+    return entity
+def wilk():
+    entity = EntityStats("Wilk", 10, 10, 10, [], 5, 2)
+    return entity
+def wilk_alfa():
+    entity = EntityStats("Wilk Alfa", 15, 15, 5, [],10,3)
+    return entity
+def bagienny_potwor():
+    entity = EntityStats("Bagienny potwór", 15,10,5,[],20,5)
+    return entity
+def minotaur():
+    entity = EntityStats("Minotaur", 100, 50, 200, [], 20, 10)
+    return entity
+def wiesniak_w_kartonie():
+    entity = EntityStats("Wieśniak w kartonie",5,2,2,[],5,1)
+    return entity
+def bandyta():
+    entity = EntityStats("Bandyta", 5,3,4,[],6,3)
+    return entity
+entitylist = {"wilk":wilk(), "szkielet": szkielet(), "minotaur": minotaur(), "troll": troll(), "potężny troll": potezny_troll(),
+              "gryf": gryf(), "wilk alfa": wilk_alfa(), "bagienny potwór": bagienny_potwor(), "wieśniak w kartonie": wiesniak_w_kartonie(),
+              "bandyta": bandyta()}
 
-entity = EntityStats("kukła treningowa",20,5,10,0,2,2)
-def szkielet(entity):
-    entity.hp = 5
-    entity.armor = 0
-    entity.damage = 3
-    entity.entityname = "Szkielet"
-    #entity.loottable = [itemlist["jabłko"], itemlist["naszyjnik z kości"]]
-    entity.mp = 5
-    entity.xpreward = 20
-def troll(entity):
-    entity.hp = 20
-    entity.armor = 5
-    entity.damage = 10
-    entity.entityname = "Troll"
-    #entity.loottable = [itemlist["eliksir many"]]
-    entity.mp = 20
-    entity.xpreward = 50
-def potezny_troll(entity):
-    entity.hp = 40
-    entity.armor = 25
-    entity.damage = 15
-    entity.entityname = "Potęzny troll"
-    #entity.loottable = [itemlist["potężny eliksir many"]]
-    entity.mp = 20
-    entity.xpreward = 70
-def gryf(entity): #### NAZWA DO ZMIANY, ZALEŻY OD PISARZY
-    entity.hp = 30
-    entity.armor = 0
-    entity.damage = 20
-    entity.entityname = "Gryf"
-    #entity.loottable = [itemlist["Potężny eliksir życia"]] #### PLUS TA SKORUPKA OPISANA W FABULE, TRZEBA COŚ WYMYŚLIć
-    entity.mp = 30
-    entity.xpreward = 40
-def wilk(entity):
-    entity.hp = 10
-    entity.armor = 0
-    entity.damage = 8
-    entity.entityname = "Wilk"
-    #entity.loottable = [itemlist["mięso z wilka"]] #### PLUS OPISANA W FABULE SKÓRA
-    entity.mp = 30
-    entity.xpreward = 40
-def wilk_alfa(entity):
-    entity.hp = 30
-    entity.armor = 5
-    entity.damage = 12
-    entity.entityname = "Wilk Alfa"
-    #entity.loottable = [itemlist["mięso z wilka"], itemlist["skóra wilka"]]
-    entity.mp = 35
-    entity.xpreward = 60
-def bagienny_potwor(entity):
-    entity.hp = 60
-    entity.armor = 15
-    entity.damage = 15
-    entity.entityname = "Potwór z bagien"
-    #entity.loottable = [itemlist["Potężny eliksir życia"], itemlist["Potęzny eliksir many"], itemlist["królicza łapka"]]
-    entity.mp = 40
-    entity.xpreward = 150
-def minotaur(entity):
-    entity.hp = 200
-    entity.armor = 30
-    entity.damage = 25
-    entity.entityname = "Potężny Minotaur"
-    #entity.loottable = []  #### KLUCZ OPISANY W FABULE
-    entity.mp = 60
-    entity.xpreward = 300
-def wiesniak_w_kartonie(entity):
-    entity.hp = 15
-    entity.armor = 6
-    entity.damage = 10
-    entity.entityname = "Wieśniak w kartonie"
-    #entity.loottable = [itemlist["zniszczona przeszywanica"], itemlist["skórzane spodnie"]] #### PLUS JAKAŚ BROń
-    entity.mp = 10
-    entity.xpreward = 15
-def bandyta(entity):
-    entity.hp = 20
-    entity.armor = 10
-    entity.damage = 15
-    entity.entityname = "Bandyta"
-    #entity.loottable = [itemlist["Potężny eliksir życia"]]  #### PLUS TA SKORUPKA OPISANA W FABULE, TRZEBA COŚ WYMYŚLIć
-    entity.mp = 20
-    entity.xpreward = 30
-#entitylist = {"szkielet": szkielet(entity), "troll": troll(entity), "potężny troll": potezny_troll(entity), "gryf": gryf(entity), "wilk": wilk(entity),
-#              "wilk alfa": wilk_alfa(entity), "bagienny potwór": bagienny_potwor(entity), "minotaur": minotaur(entity), "wieśniak w kartonie":
-#                  wiesniak_w_kartonie(entity), "bandyta": bandyta(entity)}    
+
+
 akcja=['Zjedz','Użyj','Opis','Atakuj','Zagadaj']
 OtherAction=['zjedz','użyj','opis','atakuj','zagadaj', 'ubierz', 'dobądź', 'zdejmij', 'schowaj', 'ekwipunek', 'weź']
 ItemAction=['zjedz','użyj','opis','ubierz','dobądź','zdejmij','schowaj','ekwipunek']
 DebugAction=['debug']
-InformacjeLokacji = [[1,0,0,0],[0,0]]
+InformacjeLokacji = [[1,0,0,0],[0,0],[0,0]]
 def ActInput(ActionInput):
     ActionInput = input().lower()
     return ActionInput
 itemlist = items()
-helmet = itemlist["puste"]
-chestplate = itemlist["puste"]
-legs = itemlist["puste"]
-gloves = itemlist["puste"]
-item1 = "puste"
-item2 = "puste"
-item3 = "puste"
+helmet = itemlist["pikelhauba"]
+chestplate = itemlist["zbroja płytowa"]
+legs = itemlist["nagolenniki"]
+gloves = itemlist["skórzane rękawice"]
+item1 = itemlist["jabłko"]
+item2 = itemlist["eliksir życia"]
+item3 = itemlist["potężny eliksir życia"]
 item4 = "puste"
 item5 = "puste"
-amulet = itemlist["brak_amuletu"]
+amulet = itemlist["naszyjnik z kości"]
 weapon = itemlist["brak broni"]
-money = 10
+money = 50
 ekwipunek = [helmet, chestplate, legs, gloves, item1, item2, item3, item4, item5, amulet, money, weapon]
 
     
@@ -315,6 +325,7 @@ YW = ['W','w']
 YS = ['S','s']
 XA = ['A','a']
 XD = ['D','d']
+entity = EntityStats("",0,0,0,[],0,0)
 player = PlayerStats("",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,100.0,100.0)
 player.name = str(input("Powiedz jak się nazywasz podróżniku.")) #możecie to dać pod komentarzem jak przeszkadza
 player.classchoice() #to też możecie dać pod komentarzem
@@ -334,14 +345,26 @@ while True:
     player.hpmpscaling()
     player.calcdamage()
     player.calclevel()
+    items()
+    itemlist = items()
+    inventory(ekwipunek, ActionInput, itemlist, player)
     player.prevhpscaling()
     print() #TEMP FIX
-    ActionInput = input("[{} HP] [{} MP] [{} XP] [{} LVL] {}".format(player.HP,player.MP,player.XP,player.level,"\n")).lower()
-    if ActionInput == "walcz":
-        fight = 1
-        SystemWalki(player,entity,fight)
-        player.prevhpscaling()
-        player.hpmpscaling()
+    ActionInput = input("[{}/{} HP] [{}/{} MP] [{} XP] [{} LVL] {}".format(player.HP,player.MaxHP,player.MP,player.MaxMP,player.XP,player.level,"\n")).lower()
+    if ActionInput == "walcz" and entity.entityname != "":
+        if entity.hp <= 0:
+            print("Przeciwnik już jest martwy.")
+            fight = 0
+        if entity.hp > 0:
+            fight = 1
+            SystemWalki(player, entity, fight)
+            player.prevhpscaling()
+            player.hpmpscaling()
+            if player.HP <= 0:
+                print("Umarłeś.")
+                break
+    if ActionInput == "walcz" and entity.entityname == "":
+        print("W tej lokacji nie ma żadnego przeciwnika.")
     if ActionInput == "stats":
         player.displaystats()
     if ActionInput == "addxp":
@@ -373,9 +396,6 @@ while True:
             player.calclevel()
         if y not in ("str","dex","int","end","luck"):
             print("zła odpowiedź")                         #kod co do statystyk gracza tu się kończy            
-    items()
-    itemlist = items()
-    inventory(ekwipunek, ActionInput, itemlist, player)
     if InformacjeLokacji[0][0] == 1 and ActionInput in YW:
         InformacjeLokacji[1][1] = InformacjeLokacji[1][1]+1
     if InformacjeLokacji[0][0] == 0 and ActionInput in YW:
@@ -398,33 +418,21 @@ while True:
 
     if (InformacjeLokacji[1][0] == 0) and (InformacjeLokacji[1][1] == 0):
         WystępowanieNPC(itemlist, ParametryVendora, InformacjeLokacji, ekwipunek, ActionInput)
+        entity = entitylist[random.choice(["szkielet", "wilk", "minotaur"])]
         InformacjeLokacji[0][0] = 1
         InformacjeLokacji[0][1] = 0
         InformacjeLokacji[0][2] = 0
         InformacjeLokacji[0][3] = 0
+        InformacjeLokacji[2][0] = 1
         Lokacja1()
         
     if InformacjeLokacji[1][0] == 0 and InformacjeLokacji[1][1] == 1:
         WystępowanieNPC(itemlist, ParametryVendora, InformacjeLokacji, ekwipunek, ActionInput)
+        LosowanieEnemy(InformacjeLokacji)
         InformacjeLokacji[0][0] = 0
         InformacjeLokacji[0][1] = 1
         InformacjeLokacji[0][2] = 0
         InformacjeLokacji[0][3] = 0
+        InformacjeLokacji[2][0] = 0
         Lokacja2()
-        
-
-
-
-                
-
-
-                      
-            
-
-        
-            
-        
-
-    
-
-    
+input()
