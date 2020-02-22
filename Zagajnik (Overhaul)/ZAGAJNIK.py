@@ -349,7 +349,11 @@ while True:
     itemlist = items()
     inventory(ekwipunek, ActionInput, itemlist, player)
     player.prevhpscaling()
-    print() #TEMP FIX
+    if player.HP > player.MaxHP:
+        player.HP = player.MaxHP
+    if player.MP > player.MaxMP:
+        player.MP = player.MaxMP
+    print() 
     ActionInput = input("[{}/{} HP] [{}/{} MP] [{} XP] [{} LVL] {}".format(player.HP,player.MaxHP,player.MP,player.MaxMP,player.XP,player.level,"\n")).lower()
     if ActionInput == "walcz" and entity.entityname != "":
         if entity.hp <= 0:
